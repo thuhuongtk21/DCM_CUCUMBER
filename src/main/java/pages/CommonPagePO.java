@@ -74,6 +74,13 @@ public class CommonPagePO extends AbstractPage{
 	/*--------------------------------------------------------*/
 	
 	
+	/*----------------------------LABEL----------------------------*/
+	
+	public String getDynamicValueInDynamicLabel(String labelName) {
+		waitForControlVisible(driver, CommonPageUI.DYNAMIC_LABEL, labelName);
+		return getTextElement(driver, CommonPageUI.DYNAMIC_LABEL, labelName);
+	}
+	
 	/*----------------------------BUTTON----------------------------*/
 	public void clickOnDynamicButton(String value) {
 		waitForControlVisible(driver, CommonPageUI.DYNAMIC_BUTTON, value);

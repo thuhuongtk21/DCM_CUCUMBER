@@ -15,5 +15,6 @@ public class CommonPageUI {
 	public static final String GET_DATA_DYNAMIC_COLUMN = "//tr[@class='odd' or @class='even']/td[%s]";
 	public static final String ENABLE_NEXT_PAGE = "//a[@class='paginate_button next' and text()='Next']";
 	public static final String DYNAMIC_BUTTON = "//button[@id='%s']";
+	public static final String DYNAMIC_LABEL = "//label[@id='%s']";
 
 }

@@ -53,6 +53,15 @@ public class OfferMaintainPageSteps extends AbstractPage {
 		abstractTest.verifyEquals(actualValue, expectedValue);
 	}
 	
+	@Then("^I verify expected data at \"(.*?)\" label with actual data of \"(.*?)\" from \"(.*?)\" \"(.*?)\" \"(.*?)\" \"(.*?)\"$")
+	public void iVerifyExpectedDataAtLabelWithActualDataFromDatabase(String labelName, String columnValue, String schema, String tableName, String columnName, String value) throws Exception {
+		String expectedValue = commonPage.getDynamicValueInDynamicLabel(labelName);	
+		String actualValue = commonPage.getInforFromOfferTable(columnValue, schema, tableName, columnName, value);
+		System.out.println("Expected value = "+expectedValue);
+		System.out.println("Actual value = "+actualValue);
+		abstractTest.verifyEquals(actualValue, expectedValue);
+	}
+	
 	@When("^I click on Search icon$")
 	public void iClickOnSearchIcon() {
 		offerMaintainPage.clickOnSearchIcon();

@@ -119,6 +119,13 @@ public class AbstractPage {
 		return element.getText();
 
 	}
+	
+	public String getTextElement(WebDriver driver, String locator, String value) {
+		locator = String.format(locator, value);
+		WebElement element = driver.findElement(By.xpath(locator));
+		return element.getText();
+
+	}
 
 	public int getSizeElement(WebDriver driver, String locator) {
 		List<WebElement> elements = driver.findElements(By.xpath(locator));
