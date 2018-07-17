@@ -230,8 +230,19 @@ public class AbstractPage {
 			addSearchResultToList.add(getItemOnRow);
 		}
 		addToFinalList.addAll(addSearchResultToList);
-		System.out.println("Final list = "+addToFinalList);
 	}
+	/*public void getListItemOnOnePage_Test(WebDriver driver, String locator, int value, List<String> addToFinalList) {
+		List<String> addSearchResultToList = new ArrayList<String>();
+		
+		locator = String.format(locator, value);
+		
+		List<WebElement> resultList = driver.findElements(By.xpath(locator));
+		for (WebElement resultItem : resultList) {
+			String getItemOnRow = resultItem.getText();
+			addSearchResultToList.add(getItemOnRow);
+		}
+		addToFinalList.addAll(addSearchResultToList);
+	}*/
 	
 	
 
@@ -405,7 +416,7 @@ public class AbstractPage {
 	}
 
 	public void waitForControlInvisible(WebDriver driver, String locator) {
-		WebDriverWait wait = new WebDriverWait(driver, 60);
+		WebDriverWait wait = new WebDriverWait(driver, 600);
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(locator)));
 	}
 

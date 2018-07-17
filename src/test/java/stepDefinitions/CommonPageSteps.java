@@ -49,7 +49,13 @@ public class CommonPageSteps extends AbstractPage {
 	
 	@When("^I get data of column \"(.*?)\"$")
 	public void iGetDataOfDynamicColumn(String value) {
-		commonPage.getListItemOfOneColumn(value);
+		commonPage.getListItemOfOneColumnOnOnePage(value);
+	}
+	
+	@Given("^I get data of column \"(.*?)\" on all pages$")
+	public void iGetDataOfDynamicColumnOnAllPages(String value) {
+		commonPage.getListItemOfOneColumnOnAllPages(value);
+	    
 	}
 
 	@When("^I click on \"(.*?)\" icon$")
@@ -105,6 +111,9 @@ public class CommonPageSteps extends AbstractPage {
 		   break;
 	   case "/DCM_UI/offer-review|Review":
 		   commonPage.openOfferReviewPage(driver);
+		   break;
+	   case "/DCM_UI/offer-acceptant|Accept/Reject":
+		   commonPage.openOfferAcceptPage(driver);
 		   break;
 	   case "/DCM_UI/browse-deals-and-costs1|Browse Deals and Costs":
 	   		commonPage.openBrowseDealAndCostPage(driver);

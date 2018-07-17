@@ -7,11 +7,11 @@ Feature: OFFER CREATE FUNCTION
   Scenario Outline: [TC01] - CREATE OFFER WITH VENDOR TYPE
     Given I login to application
     And I open "/DCM_UI/offer-create" "Create" screen
-    When I input to "vendorId" with data "<InputVendor>"
+    When I input to "vendorId" text-box with data "<InputVendor>"
     And I select a Vendor from smart search list with data "<InputVendor>" and "<VendorType>"
-    And I input to "descriptionId" with data "<Description>"
+    And I input to "descriptionId" text-box with data "<Description>"
     And I select "<AssignToUserType>" with data "<AssignToUserType>"
-    And I input to "assignedToIdVendor" with data "<AssignToUserValue>"
+    And I input to "assignedToIdVendor" text-box with data "<AssignToUserValue>"
     And I select a value from smart search list with data "<AssignToUserValue>"
     And I click on "nextOffer" icon
     Then I verify offer is created successfully
