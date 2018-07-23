@@ -11,6 +11,7 @@ import org.openqa.selenium.WebDriver;
 
 import commons.AbstractPage;
 import interfaces.CommonPageUI;
+import interfaces.OfferSearchUI;
 import interfaces.SQL;
 
 public class CommonPagePO extends AbstractPage {
@@ -30,6 +31,11 @@ public class CommonPagePO extends AbstractPage {
 		waitForControlVisible(driver, CommonPageUI.DYNAMIC_INPUT_TEXTBOX, textboxName);
 		return getAttributeValue(driver, CommonPageUI.DYNAMIC_INPUT_TEXTBOX, textboxName, attributeName);
 	}
+	
+	public void clickOnDynamicTextbox(String value) {
+		//waitForControlVisible(driver, CommonPageUI.DYNAMIC_DROP_DOWN_CLICK, value);
+		clickToElement(driver, CommonPageUI.DYNAMIC_INPUT_TEXTBOX, value);
+	}
 
 	/*----------------------------TEXT-AREA----------------------------*/
 	public void inputDynamicValueToDynamicTextarea(String textareaName, String value) {
@@ -41,14 +47,8 @@ public class CommonPagePO extends AbstractPage {
 		waitForControlVisible(driver, CommonPageUI.DYNAMIC_INPUT_TEXTAREA, textareName);
 		return getAttributeValue(driver, CommonPageUI.DYNAMIC_INPUT_TEXTAREA, textareName, attributeName);
 	}
-
-	/*----------------------------SMART SEARCH VENDOR----------------------------*/
-	public void selectDynamicValueFromSmartSearchListWithTwoDynamicValue(String value1, String value2) {
-		waitForControlVisible(driver, CommonPageUI.SMART_SEARCH_VENDOR_LIST);
-		getListElementWithTwoDynamicvalue(driver, CommonPageUI.SMART_SEARCH_VENDOR_LIST, value1, value2);
-	}
-
-	/*----------------------------SMART TEXTBOX----------------------------*/
+	
+	/*----------------------------SMART SEARCH WITH ONE DYNAMIC VALUE----------------------------*/
 	public void selectDynamicValueFromSmartSearchListWithOneDynamicValue(String value) {
 		waitForControlVisible(driver, CommonPageUI.SMART_SEARCH_TEXTBOX_LIST);
 		getListElementWithOneDynamicvalue(driver, CommonPageUI.SMART_SEARCH_TEXTBOX_LIST, value);
@@ -60,15 +60,29 @@ public class CommonPagePO extends AbstractPage {
 		waitForControlInvisible(driver, CommonPageUI.LOADING_BAR);
 	}
 
-	/*----------------------------DROP_DOWN----------------------------*/
-	public void clickOnDropdownIcon(String value) {
-		waitForControlVisible(driver, CommonPageUI.DYNAMIC_DROP_DOWN_CLICK, value);
-		clickToElement(driver, CommonPageUI.DYNAMIC_DROP_DOWN_CLICK, value);
+
+	/*----------------------------SMART SEARCH WITH TWO DYNAMIC VALUE----------------------------*/
+	public void selectDynamicValueFromSmartSearchListWithTwoDynamicValue(String value1, String value2) {
+		waitForControlVisible(driver, CommonPageUI.SMART_SEARCH_VENDOR_LIST);
+		getListElementWithTwoDynamicvalue(driver, CommonPageUI.SMART_SEARCH_VENDOR_LIST, value1, value2);
 	}
 
-	public void selectValueFromDropdownList(String value, String text) {
-		waitForControlVisible(driver, CommonPageUI.DYNAMIC_DROP_DOWN_VALUE, value);
-		clickToElement(driver, CommonPageUI.DYNAMIC_DROP_DOWN_VALUE, value, text);
+	
+	/*----------------------------DROP_DOWN----------------------------*/
+	public void clickOnDropdownIcon(String value) {
+		//waitForControlVisible(driver, CommonPageUI.DYNAMIC_DROP_DOWN_CLICK, value);
+		clickToElement(driver, CommonPageUI.DYNAMIC_DROP_DOWN_CLICK, value);
+	}
+	
+	public void clickOnDropdownList() {
+		//waitForControlVisible(driver, CommonPageUI.DYNAMIC_DROP_DOWN_CLICK, value);
+		clickToElement(driver, CommonPageUI.DYNAMIC_DROP_DOWN_CLICK);
+	}
+
+	public void selectOneValueFromDynamicDropdownListWithDynamicData(String value, String selectedText) {
+		//waitForControlVisible(driver, CommonPageUI.DYNAMIC_DROP_DOWN_VALUE, value);
+		clickToElement(driver, CommonPageUI.DYNAMIC_DROP_DOWN_VALUE, value, selectedText);
+		waitForControlInvisible(driver, CommonPageUI.LOADING_BAR);
 	}
 	/*--------------------------------------------------------*/
 
@@ -85,6 +99,24 @@ public class CommonPagePO extends AbstractPage {
 		clickToElement(driver, CommonPageUI.DYNAMIC_BUTTON, value);
 		waitForControlInvisible(driver, CommonPageUI.LOADING_BAR);
 	}
+	
+	/*----------------------------CONTEXT MENU----------------------------*/
+	
+	public void rightClickOnARecord(String value) {
+		waitForControlVisible(driver, CommonPageUI.DYNAMIC_SELECTED_RECORD, value);
+		rightClick(driver, CommonPageUI.DYNAMIC_SELECTED_RECORD, value);
+	}
+	
+	public void clickOnADynamicContextMenu(String value) {
+		waitForControlVisible(driver, CommonPageUI.DYNAMIC_CONTEXT_MENU, value);
+		clickToElement(driver, CommonPageUI.DYNAMIC_CONTEXT_MENU, value);
+		waitForControlInvisible(driver, CommonPageUI.DYNAMIC_CONTEXT_MENU);
+	}
+	
+	public boolean isSelectedScreenOpenCorrectly(String value) {
+		waitForControlVisible(driver, CommonPageUI.DYNAMIC_SCREEN_NAME, value);
+		return isControlDisplayed(driver, CommonPageUI.DYNAMIC_SCREEN_NAME, value);
+	}
 
 	/*----------------------------GET LIST DATA FROM SEARCH RESULT----------------------------*/
 
@@ -100,7 +132,7 @@ public class CommonPagePO extends AbstractPage {
 			clickOnPageNumber(driver, CommonPageUI.DYNAMIC_PAGE, page);
 			waitForControlInvisible(driver, CommonPageUI.LOADING_BAR);
 			getListItemOnOnePage(driver, CommonPageUI.GET_DATA_DYNAMIC_COLUMN, value, addToFinalList);
-			System.out.println("Lis of item = "+ addToFinalList);
+			System.out.println("List of item = "+ addToFinalList);
 
 		} while (isControlDisplayed(driver, CommonPageUI.ENABLE_NEXT_PAGE));
 	}
@@ -109,9 +141,37 @@ public class CommonPagePO extends AbstractPage {
 
 		List<String> addToFinalList = new ArrayList<String>();
 		waitForControlInvisible(driver, CommonPageUI.LOADING_BAR);
-		getListItemOnOnePage(driver, CommonPageUI.GET_DATA_DYNAMIC_COLUMN, value, addToFinalList);
+		int countColumn = getSizeElement(driver, CommonPageUI.DYNAMIC_NUMBER_OF_COLUMN, value);
+		for(int columnNumber = 0; columnNumber < countColumn; columnNumber++) {
+			String columnNumber_Convert = Integer.toString(columnNumber);
+			getListItemOnOnePage(driver, CommonPageUI.GET_DATA_DYNAMIC_COLUMN, columnNumber_Convert, addToFinalList);
+			//System.out.println("List of Item on column "+columnNumber+ " and page "+page+"="+addToFinalList);
+		}
 		System.out.println("Final list of column "+value+" = "+addToFinalList);
 
+	}
+	
+	public void getListItemOfAllColumnsOnAllPages(String value) {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
+		List<String> addToFinalList = new ArrayList<String>();
+		int page = 0;
+		do {
+			if (!isControlDisplayed(driver, CommonPageUI.ENABLE_NEXT_PAGE))
+				break;
+			page = page + 1;
+			clickOnPageNumber(driver, CommonPageUI.DYNAMIC_PAGE, page);
+			waitForControlInvisible(driver, CommonPageUI.LOADING_BAR);
+			int countColumn = getSizeElement(driver, CommonPageUI.DYNAMIC_NUMBER_OF_COLUMN, value);
+			for(int columnNumber = 0; columnNumber < countColumn; columnNumber++) {
+				String columnNumber_Convert = Integer.toString(columnNumber);
+				getListItemOnOnePage(driver, CommonPageUI.GET_DATA_DYNAMIC_COLUMN, columnNumber_Convert, addToFinalList);
+				//System.out.println("List of Item on column "+columnNumber+ " and page "+page+"="+addToFinalList);
+			}
+			
+			System.out.println("List of item = "+ addToFinalList);
+
+		} while (isControlDisplayed(driver, CommonPageUI.ENABLE_NEXT_PAGE));
 	}
 
 	/*----------------------------PressKey----------------------------*/
@@ -147,7 +207,7 @@ public class CommonPagePO extends AbstractPage {
 		return PageFactoryManager.getOfferCreatePage(driver);
 	}
 
-	public DealBuilderPO openDealBuilderPage(WebDriver driver) {
+	public DealBuilderPagePO openDealBuilderPage(WebDriver driver) {
 		clickToElement(driver, CommonPageUI.MENU_DYNAMIC_LINK, "#", "Offer");
 		clickToElement(driver, CommonPageUI.MENU_DYNAMIC_LINK, "/DCM_UI/deal-builder", "Deal Builder");
 		waitForControlInvisible(driver, CommonPageUI.LOADING_BAR);

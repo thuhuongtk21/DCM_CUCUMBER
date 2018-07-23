@@ -18,10 +18,7 @@ public class OfferCreateSteps {
 		commonPage = PageFactoryManager.getCommonPage(driver);
 	}
 
-	@When("^I select \"(.*?)\" with data \"(.*?)\"$")
-	public void iSelectAssignedToUserIdWithData(String value, String text) {
-		commonPage.selectValueFromDropdownList(value, text);
-	}
+	
 
 	@When("^I select a value from smart search list with data \"(.*?)\"$")
 	public void iSelectValueFromAssignedToList(String value) {

@@ -22,6 +22,7 @@ public class CommonPageSteps extends AbstractPage {
 		driver = Hooks.openBrowser();
 		commonPage = PageFactoryManager.getCommonPage(driver);
 		loginPage = PageFactoryManager.getLoginPage(driver);
+		abstractTest = PageFactoryManager.getAbstractTestPage(driver);
 
 	}
 
@@ -45,6 +46,11 @@ public class CommonPageSteps extends AbstractPage {
 	public void iSelectADynamicValueFromSmartSearchList(String value1, String value2) {
 		commonPage.selectDynamicValueFromSmartSearchListWithTwoDynamicValue(value1, value2);
 
+	}
+	
+	@When("^I select \"(.*?)\" with data \"(.*?)\"$")
+	public void iSelectOneValueFromDynamicDropdownListWithDynamicData(String value, String selectedText) {
+		commonPage.selectOneValueFromDynamicDropdownListWithDynamicData(value, selectedText);
 	}
 	
 	@When("^I get data of column \"(.*?)\"$")
@@ -73,6 +79,16 @@ public class CommonPageSteps extends AbstractPage {
 	    commonPage.clickOnDropdownIcon(value);
 	}
 	
+	@When("^I click on \"(.*?)\" text-box$")
+	public void iClickOnDynamicTextbox(String value) {
+	    commonPage.clickOnDynamicTextbox(value);
+	}
+	
+	@When("^I click on drop-down list$")
+	public void iClickOnDropdownList() {
+	    commonPage.clickOnDropdownList();
+	}
+	
 	@When("^I press key on \"(.*?)\" textbox$")
 	public void iPressEnterKeyOnDynamicTextbox(String value) {
 	    commonPage.pressKeyOnDynamicTextbox(value);
@@ -91,7 +107,39 @@ public class CommonPageSteps extends AbstractPage {
 		//abstractTest.verifyEquals(actualValue, expectedValue);
 	}
 	
+	@When("^I get all data on all pages in \"(.*?)\"$")
+	public void iGetAllDataOnAllPages(String value) {
+	    commonPage.getListItemOfOneColumnOnOnePage(value);
+	}
 	
+	@When("^I get all data on one pages in \"(.*?)\"$")
+	public void iGetAllDataOnOnePages(String value) {
+	    commonPage.getListItemOfAllColumnsOnAllPages(value);
+	}	
+	
+	/*-------------Right click option-----------*/
+	@Given("^I right click on a record which contains \"(.*?)\" value$")
+	public void iRightClickOnARecordWhichContainsValue(String value) {
+		commonPage.rightClickOnARecord(value);
+	}
+
+	@Given("^I select \"(.*?)\" option$")
+	public void iSelectAnOptionFromContextMenu(String value) {
+		commonPage.clickOnADynamicContextMenu(value);
+	}
+	
+	@Then("^I verify \"(.*?)\" screen is open correctly$")
+	public void iVerifySelectedScreenIsOpenedCorrectly(String value) {
+		abstractTest.verifyTrue(commonPage.isSelectedScreenOpenCorrectly(value));
+	}
+	
+	@When("^I verify \"(.*?)\" is shown correctly with selected Item \"(.*?)\"$")
+	public void iVerifySelectedItemShownCorrectly(String textboxName, String value) {
+		String expectedValue = commonPage.getDynamicValueInDynamicTextbox(textboxName, "value");
+		abstractTest.verifyEquals(value, expectedValue);
+	}
+	
+
 
 	@Given("^I open \"(.*?)\" \"(.*?)\" screen$")
 	public void iOpenDynamicScreen(String menu, String subMenu) throws Exception {

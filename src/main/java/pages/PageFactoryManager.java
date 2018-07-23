@@ -9,7 +9,7 @@ import pages.DealsSODLDetailsPO;
 import pages.DealsSODLSearchAndMaintainPO;
 import pages.DealsSODLTransactionPO;
 import pages.DealsSearchPO;
-import pages.DealBuilderPO;
+import pages.DealBuilderPagePO;
 import pages.OfferAccpetPO;
 import pages.OfferCreatePO;
 import pages.OfferMaintainPO;
@@ -23,7 +23,7 @@ public class PageFactoryManager {
 	private static LoginPagePO loginPage;
 	private static DashboardPagePO dashboardPage;
 	private static OfferCreatePO offerCreatePage;
-	private static DealBuilderPO dealBuilderPage;
+	private static DealBuilderPagePO dealBuilderPage;
 	private static OfferReviewPO offerReviewPage;
 	private static OfferAccpetPO offerAcceptPage;
 	private static OfferSearchPO offerSearchPage;
@@ -70,9 +70,9 @@ public class PageFactoryManager {
 
 	}
 
-	public static DealBuilderPO getDealBuilderPage(WebDriver driver_) {
+	public static DealBuilderPagePO getDealBuilderPage(WebDriver driver_) {
 		if (dealBuilderPage == null) {
-			return new DealBuilderPO(driver_);
+			return new DealBuilderPagePO(driver_);
 		}
 		return dealBuilderPage;
 	}

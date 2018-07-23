@@ -26,7 +26,6 @@ Feature: OFFER SEARCH FUNCTION
       | Assigned To |
       | p363547     |
 
-  @offersearch
   Scenario Outline: [TC-03]: Search with Offer description, Vendor, Assigned To
     Given I login to application
     And I open "/DCM_UI/offer-search" "Search" screen
@@ -41,3 +40,38 @@ Feature: OFFER SEARCH FUNCTION
     Examples: 
       | OfferDesc | VendorNumber | VendorType | Assigned To |
       | HEB       |        17349 | DSD        | e127847     |
+
+  Scenario Outline: [TC-04]: Search with Offer Description
+    Given I login to application
+    And I open "/DCM_UI/offer-search" "Search" screen
+    When I input to "offerName" text-box with data "<OfferDesc>"
+    And I click on "btn-search" button
+    And I get all data on one pages in "tbl-results"
+
+    Examples: 
+      | OfferDesc  |
+      | HEB_2018 G |
+
+
+  Scenario Outline: [TC-05]: Search with Offer ID
+    Given I login to application
+    And I open "/DCM_UI/offer-search" "Search" screen
+    When I input to "offerId" text-box with data "<OfferID>"
+    And I click on "btn-search" button
+
+    Examples: 
+      | OfferID |
+      | 1001091 |
+      
+      
+      @offersearch
+  Scenario Outline: [TC-06]: Search with Offer Status
+    Given I login to application
+    And I open "/DCM_UI/offer-search" "Search" screen
+    When I click on "offerStatus" drop-down list
+    And I select "<OfferStatus>" with data "<OfferStatus>"
+    And I click on "btn-search" button
+
+    Examples: 
+      | OfferStatus |
+      | REJECTED  |

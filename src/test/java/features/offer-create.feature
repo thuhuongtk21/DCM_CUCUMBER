@@ -10,6 +10,7 @@ Feature: OFFER CREATE FUNCTION
     When I input to "vendorId" text-box with data "<InputVendor>"
     And I select a Vendor from smart search list with data "<InputVendor>" and "<VendorType>"
     And I input to "descriptionId" text-box with data "<Description>"
+    And I click on "assignedToUserId" drop-down list
     And I select "<AssignToUserType>" with data "<AssignToUserType>"
     And I input to "assignedToIdVendor" text-box with data "<AssignToUserValue>"
     And I select a value from smart search list with data "<AssignToUserValue>"

@@ -21,7 +21,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import interfaces.CommonPageUI;
-import pages.DealBuilderPO;
+import pages.DealBuilderPagePO;
 import pages.OfferAccpetPO;
 import pages.OfferCreatePO;
 import pages.OfferMaintainPO;
@@ -132,6 +132,13 @@ public class AbstractPage {
 		return elements.size();
 
 	}
+	
+	public int getSizeElement(WebDriver driver, String locator, String value) {
+		locator = String.format(locator, value);
+		List<WebElement> elements = driver.findElements(By.xpath(locator));
+		return elements.size();
+
+	}
 
 	public void checkTheCheckbox(WebDriver driver, String locator) {
 		WebElement element = driver.findElement(By.xpath(locator));
@@ -208,6 +215,7 @@ public class AbstractPage {
 		for (WebElement element : elementList) {
 			if (element.getText().contains(value1) && element.getText().contains(value2)) {
 				element.click();
+				break;
 			}
 		}
 
@@ -231,6 +239,24 @@ public class AbstractPage {
 		}
 		addToFinalList.addAll(addSearchResultToList);
 	}
+	
+	public void getListItemOnOnePage_SpecificList(WebDriver driver, String locator, String value) {
+		List<String> addSearchResultToList = new ArrayList<String>();
+		List<String> addToColumnList =  new ArrayList<String>();
+		
+		locator = String.format(locator, value);
+		
+		List<WebElement> resultList = driver.findElements(By.xpath(locator));
+		for (WebElement resultItem : resultList) {
+			String getItemOnRow = resultItem.getText();
+			addSearchResultToList.add(getItemOnRow);
+		}
+
+		addToColumnList.addAll(addSearchResultToList);
+		System.out.println("Add to column list = "+ addToColumnList);
+		
+	}
+	
 	/*public void getListItemOnOnePage_Test(WebDriver driver, String locator, int value, List<String> addToFinalList) {
 		List<String> addSearchResultToList = new ArrayList<String>();
 		
@@ -312,6 +338,15 @@ public class AbstractPage {
 	}
 
 	public void rightClick(WebDriver driver, String locator) {
+		WebElement element = driver.findElement(By.xpath(locator));
+
+		Actions action = new Actions(driver);
+		action.contextClick(element).perform();
+
+	}
+	
+	public void rightClick(WebDriver driver, String locator, String value) {
+		locator = String.format(locator, value);
 		WebElement element = driver.findElement(By.xpath(locator));
 
 		Actions action = new Actions(driver);

@@ -58,8 +58,8 @@ public class Hooks {
 				Runtime.getRuntime().addShutdownHook(new Thread(new BrowserCleanup()));
 			}
 
-			driver.get("https://w2capl0051510.heb.com:20143/DCM_UI/login?r=/");
-			//driver.get("https://w2capl0051511.heb.com:20143/DCM_UI/login?r=/");
+			//driver.get("https://w2capl0051510.heb.com:20143/DCM_UI/login?r=/");
+			driver.get("https://w2capl0051511.heb.com:20143/DCM_UI/login?r=/");
 			driver.manage().window().maximize();
 			driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 			log.info("-----Start browser------");

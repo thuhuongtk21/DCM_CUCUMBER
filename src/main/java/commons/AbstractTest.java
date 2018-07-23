@@ -74,7 +74,7 @@ public class AbstractTest extends AbstractPage{
 		  return pass;
 	  }
 	  
-	  protected boolean verifyTrue(boolean condition) {
+	  public boolean verifyTrue(boolean condition) {
 		  return verifyPassed(condition, false);
 		  
 	  }
