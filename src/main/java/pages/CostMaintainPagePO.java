@@ -4,10 +4,10 @@ import org.openqa.selenium.WebDriver;
 
 import commons.AbstractPage;
 
-public class CostMaintainPO extends AbstractPage{
+public class CostMaintainPagePO extends AbstractPage{
 	WebDriver driver;
 	
-	public CostMaintainPO(WebDriver driver_) {
+	public CostMaintainPagePO(WebDriver driver_) {
 		this.driver = driver_;
 	}
 

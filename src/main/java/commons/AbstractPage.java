@@ -52,6 +52,15 @@ public class AbstractPage {
 		WebElement element = driver.findElement(By.xpath(locator));
 		element.click();
 	}
+	
+	
+	
+	public void moveAndClickToElement(WebDriver driver, String locator) {
+		WebElement element = driver.findElement(By.xpath(locator));
+		Actions action = new Actions(driver);
+		action.moveToElement(element).perform();
+		element.click();
+	}
 
 	public void clickToElement(WebDriver driver, String locator, String value) {
 		locator = String.format(locator, value);
@@ -202,9 +211,10 @@ public class AbstractPage {
 	public void getListElementWithOneDynamicvalue(WebDriver driver, String locator, String value) {
 		List<WebElement> elementList = driver.findElements(By.xpath(locator));
 		for (WebElement element : elementList) {
-			System.out.println("Assign to ID value = " + element.getText());
 			if (element.getText().contains(value)) {
+				System.out.println("Selected element = " + element.getText());				
 				element.click();
+				System.out.println("Click on element = " + element.getText());
 			}
 		}
 
@@ -336,6 +346,15 @@ public class AbstractPage {
 		action.moveToElement(element).perform();
 
 	}
+	
+	public void hoverMouse(WebDriver driver, String locator, String value) {
+		locator = String.format(locator, value);
+		WebElement element = driver.findElement(By.xpath(locator));
+
+		Actions action = new Actions(driver);
+		action.moveToElement(element).perform();
+
+	}
 
 	public void rightClick(WebDriver driver, String locator) {
 		WebElement element = driver.findElement(By.xpath(locator));
@@ -371,12 +390,21 @@ public class AbstractPage {
 
 	}
 	
-	public void dynamicKeyPress(WebDriver driver, String locator, String value) {
+	public void dynamicEnterKeyPress(WebDriver driver, String locator, String value) {
 		locator = String.format(locator, value);
 		WebElement element = driver.findElement(By.xpath(locator));
 
 		Actions action = new Actions(driver);
-		action.sendKeys(element, Keys.ENTER);
+		action.sendKeys(element, Keys.ENTER).perform();
+
+	}
+	
+	public void dynamicTabKeyPress(WebDriver driver, String locator, String value ) {
+		locator = String.format(locator, value);
+		WebElement element = driver.findElement(By.xpath(locator));
+
+		Actions action = new Actions(driver);
+		action.sendKeys(element, Keys.TAB).perform();
 
 	}
 

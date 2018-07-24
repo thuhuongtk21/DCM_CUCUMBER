@@ -8,7 +8,7 @@ Feature: OFFER CREATE FUNCTION
     Given I login to application
     And I open "/DCM_UI/offer-create" "Create" screen
     When I input to "vendorId" text-box with data "<InputVendor>"
-    And I select a Vendor from smart search list with data "<InputVendor>" and "<VendorType>"
+    And  I select a value from smart search list with "<InputVendor>" and "<VendorType>"
     And I input to "descriptionId" text-box with data "<Description>"
     And I click on "assignedToUserId" drop-down list
     And I select "<AssignToUserType>" with data "<AssignToUserType>"

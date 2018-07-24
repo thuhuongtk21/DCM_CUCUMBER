@@ -2,5 +2,4 @@
 Feature: Open dynamic page
 Scenario:
 
-And I right click on a record which contains "OfferID" value
-    And I select "Offer Details" option
+ And I click on "item_type_selection_smart" drop-down text-box

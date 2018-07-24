@@ -29,7 +29,7 @@ public class Hooks {
 				 if(browser == null) { 
 					 browser = System.getenv("BROWSER"); 
 					 if(browser == null) { 
-						 browser = "firefox"; 
+						 browser = "chrome"; 
 						 } 
 					 }switch (browser) {
 				case "chrome":

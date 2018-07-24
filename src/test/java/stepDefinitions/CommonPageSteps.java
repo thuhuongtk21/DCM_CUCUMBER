@@ -36,87 +36,102 @@ public class CommonPageSteps extends AbstractPage {
 	public void iInputDataInWithData(String textboxName, String value) {
 		commonPage.inputDynamicValueToDynamicTextBox(textboxName, value);
 	}
-	
+
 	@When("^I input to \"(.*?)\" text-area with data \"(.*?)\"$")
 	public void iInputDataToTextareaWithData(String textareaName, String value) {
 		commonPage.inputDynamicValueToDynamicTextarea(textareaName, value);
 	}
 
-	@When("^I select a Vendor from smart search list with data \"(.*?)\" and \"(.*?)\"$")
+	@When("^I select a value from smart search list with \"(.*?)\" and \"(.*?)\"$")
 	public void iSelectADynamicValueFromSmartSearchList(String value1, String value2) {
 		commonPage.selectDynamicValueFromSmartSearchListWithTwoDynamicValue(value1, value2);
 
 	}
-	
+
 	@When("^I select \"(.*?)\" with data \"(.*?)\"$")
 	public void iSelectOneValueFromDynamicDropdownListWithDynamicData(String value, String selectedText) {
 		commonPage.selectOneValueFromDynamicDropdownListWithDynamicData(value, selectedText);
 	}
-	
+
 	@When("^I get data of column \"(.*?)\"$")
 	public void iGetDataOfDynamicColumn(String value) {
 		commonPage.getListItemOfOneColumnOnOnePage(value);
 	}
-	
+
 	@Given("^I get data of column \"(.*?)\" on all pages$")
 	public void iGetDataOfDynamicColumnOnAllPages(String value) {
 		commonPage.getListItemOfOneColumnOnAllPages(value);
-	    
+
 	}
 
 	@When("^I click on \"(.*?)\" icon$")
 	public void iClickOnDynamicIcon(String value) {
 		commonPage.clickOnDymamicIcon(value);
 	}
-	
+
 	@When("^I click on \"(.*?)\" button$")
 	public void iClickOnDynamicButton(String value) {
 		commonPage.clickOnDynamicButton(value);
 	}
-	
+
 	@When("^I click on \"(.*?)\" drop-down list$")
 	public void iClickOnDynamicDropdownList(String value) {
-	    commonPage.clickOnDropdownIcon(value);
+		commonPage.clickOnDropdownIcon(value);
 	}
-	
+
 	@When("^I click on \"(.*?)\" text-box$")
 	public void iClickOnDynamicTextbox(String value) {
-	    commonPage.clickOnDynamicTextbox(value);
+		commonPage.clickOnDynamicTextbox(value);
 	}
-	
+
 	@When("^I click on drop-down list$")
 	public void iClickOnDropdownList() {
-	    commonPage.clickOnDropdownList();
+		commonPage.clickOnDropdownList();
 	}
-	
-	@When("^I press key on \"(.*?)\" textbox$")
+
+	@Given("^I click on \"(.*?)\" drop-down text-box$")
+	public void iClickOnDynamicDropDownTextBox(String value) {
+		commonPage.clickOnDropdownTextbox(value);
+
+	}
+
+	@When("^I press Enter key on \"(.*?)\" text-box$")
 	public void iPressEnterKeyOnDynamicTextbox(String value) {
-	    commonPage.pressKeyOnDynamicTextbox(value);
+		commonPage.pressKeyOnDynamicTextbox(value);
 	}
 	
+	@When("^I press TAB key on \"(.*?)\" text-box$")
+	public void iPressTabKeyOnDynamicTextbox(String value) {
+		commonPage.pressTabKeyOnDynamicTextbox(value);
+	}
+
 	@When("^I verify expected data at \"(.*?)\" textbox with actual data$")
 	public void iVerifyExpectedDataWithActualData(String textboxName, String actualValue) {
 		String expectedValue = commonPage.getDynamicValueInDynamicTextbox(textboxName, "value"); // "value" is in xpath
 		abstractTest.verifyEquals(actualValue, expectedValue);
 	}
-	
+
 	@Then("^I verify expected data at \"(.*?)\" textbox with actual data in \"(.*?)\" \"(.*?)\" table \"(.*?)\" column and \"(.*?)\" value$")
-	public void iVerifyExpectedDataAtTextboxWithActualDataInDB(String textboxName, String schema, String tableName, String columnName, String value) {
-		//String expectedValue = commonPage.getDynamicValueInDynamicTextbox(textboxName, "value"); // "value" is in xpath
-		//String actualValue = offerTable.getDataFromDatabase(schema, tableName, columnName, value);
-		//abstractTest.verifyEquals(actualValue, expectedValue);
+	public void iVerifyExpectedDataAtTextboxWithActualDataInDB(String textboxName, String schema, String tableName,
+			String columnName, String value) {
+		// String expectedValue =
+		// commonPage.getDynamicValueInDynamicTextbox(textboxName, "value"); // "value"
+		// is in xpath
+		// String actualValue = offerTable.getDataFromDatabase(schema, tableName,
+		// columnName, value);
+		// abstractTest.verifyEquals(actualValue, expectedValue);
 	}
-	
+
 	@When("^I get all data on all pages in \"(.*?)\"$")
 	public void iGetAllDataOnAllPages(String value) {
-	    commonPage.getListItemOfOneColumnOnOnePage(value);
+		commonPage.getListItemOfOneColumnOnOnePage(value);
 	}
-	
+
 	@When("^I get all data on one pages in \"(.*?)\"$")
 	public void iGetAllDataOnOnePages(String value) {
-	    commonPage.getListItemOfAllColumnsOnAllPages(value);
-	}	
-	
+		commonPage.getListItemOfAllColumnsOnAllPages(value);
+	}
+
 	/*-------------Right click option-----------*/
 	@Given("^I right click on a record which contains \"(.*?)\" value$")
 	public void iRightClickOnARecordWhichContainsValue(String value) {
@@ -127,50 +142,51 @@ public class CommonPageSteps extends AbstractPage {
 	public void iSelectAnOptionFromContextMenu(String value) {
 		commonPage.clickOnADynamicContextMenu(value);
 	}
-	
+
 	@Then("^I verify \"(.*?)\" screen is open correctly$")
 	public void iVerifySelectedScreenIsOpenedCorrectly(String value) {
 		abstractTest.verifyTrue(commonPage.isSelectedScreenOpenCorrectly(value));
 	}
-	
+
 	@When("^I verify \"(.*?)\" is shown correctly with selected Item \"(.*?)\"$")
 	public void iVerifySelectedItemShownCorrectly(String textboxName, String value) {
 		String expectedValue = commonPage.getDynamicValueInDynamicTextbox(textboxName, "value");
 		abstractTest.verifyEquals(value, expectedValue);
 	}
-	
-
 
 	@Given("^I open \"(.*?)\" \"(.*?)\" screen$")
 	public void iOpenDynamicScreen(String menu, String subMenu) throws Exception {
-	    // Write code here that turns the phrase above into concrete actions
-	   switch (menu + "|" + subMenu) {
-	   case "/DCM_UI/offer-create|Create":
-		   commonPage.openOfferCreatePage(driver);
-		   break;
-	   case "/DCM_UI/offer-search|Search":
-		   commonPage.openOfferSearchPage(driver);
-		   break;
-	   case "/DCM_UI/offer-maintain|Maintain":
-		   commonPage.openOfferMaintainPage(driver);
-		   break;
-	   case "/DCM_UI/deal-builder|Deal Builder":
-		   commonPage.openDealBuilderPage(driver);
-		   break;
-	   case "/DCM_UI/offer-review|Review":
-		   commonPage.openOfferReviewPage(driver);
-		   break;
-	   case "/DCM_UI/offer-acceptant|Accept/Reject":
-		   commonPage.openOfferAcceptPage(driver);
-		   break;
-	   case "/DCM_UI/browse-deals-and-costs1|Browse Deals and Costs":
-	   		commonPage.openBrowseDealAndCostPage(driver);
-	   break;
-	   case "/DCM_UI/create-location-group|Create":
-	   		commonPage.openCreateLocationGroupPage(driver);
-	   break;
-	   
-	   }
+		// Write code here that turns the phrase above into concrete actions
+		switch (menu + "|" + subMenu) {
+		case "/DCM_UI/offer-create|Create":
+			commonPage.openOfferCreatePage(driver);
+			break;
+		case "/DCM_UI/offer-search|Search":
+			commonPage.openOfferSearchPage(driver);
+			break;
+		case "/DCM_UI/offer-maintain|Maintain":
+			commonPage.openOfferMaintainPage(driver);
+			break;
+		case "/DCM_UI/deal-builder|Deal Builder":
+			commonPage.openDealBuilderPage(driver);
+			break;
+		case "/DCM_UI/offer-review|Review":
+			commonPage.openOfferReviewPage(driver);
+			break;
+		case "/DCM_UI/offer-acceptant|Accept/Reject":
+			commonPage.openOfferAcceptPage(driver);
+			break;
+		case "/DCM_UI/browse-deals-and-costs1|Browse Deals and Costs":
+			commonPage.openBrowseDealAndCostPage(driver);
+			break;
+		case "/DCM_UI/create-location-group|Create":
+			commonPage.openCreateLocationGroupPage(driver);
+			break;
+		case "/DCM_UI/cost-maintenance|Maintain":
+			commonPage.openCostMaintainPage(driver);
+			break;
+
+		}
 	}
 
 }

@@ -11,6 +11,7 @@ import org.openqa.selenium.WebDriver;
 
 import commons.AbstractPage;
 import interfaces.CommonPageUI;
+import interfaces.CostMaintainPageUI;
 import interfaces.OfferSearchUI;
 import interfaces.SQL;
 
@@ -25,6 +26,7 @@ public class CommonPagePO extends AbstractPage {
 	public void inputDynamicValueToDynamicTextBox(String textboxName, String value) {
 		waitForControlVisible(driver, CommonPageUI.DYNAMIC_INPUT_TEXTBOX, textboxName);
 		sendKeyToElement(driver, CommonPageUI.DYNAMIC_INPUT_TEXTBOX, textboxName, value);
+		//waitForControlInvisible(driver, CommonPageUI.LOADING_BAR);
 	}
 
 	public String getDynamicValueInDynamicTextbox(String textboxName, String attributeName) {
@@ -50,8 +52,8 @@ public class CommonPagePO extends AbstractPage {
 	
 	/*----------------------------SMART SEARCH WITH ONE DYNAMIC VALUE----------------------------*/
 	public void selectDynamicValueFromSmartSearchListWithOneDynamicValue(String value) {
-		waitForControlVisible(driver, CommonPageUI.SMART_SEARCH_TEXTBOX_LIST);
-		getListElementWithOneDynamicvalue(driver, CommonPageUI.SMART_SEARCH_TEXTBOX_LIST, value);
+		waitForControlVisible(driver, CommonPageUI.SMART_SEARCH_LIST);
+		getListElementWithOneDynamicvalue(driver, CommonPageUI.SMART_SEARCH_LIST, value);
 	}
 
 	public void clickOnDymamicIcon(String value) {
@@ -63,8 +65,8 @@ public class CommonPagePO extends AbstractPage {
 
 	/*----------------------------SMART SEARCH WITH TWO DYNAMIC VALUE----------------------------*/
 	public void selectDynamicValueFromSmartSearchListWithTwoDynamicValue(String value1, String value2) {
-		waitForControlVisible(driver, CommonPageUI.SMART_SEARCH_VENDOR_LIST);
-		getListElementWithTwoDynamicvalue(driver, CommonPageUI.SMART_SEARCH_VENDOR_LIST, value1, value2);
+		waitForControlVisible(driver, CommonPageUI.SMART_SEARCH_LIST);
+		getListElementWithTwoDynamicvalue(driver, CommonPageUI.SMART_SEARCH_LIST, value1, value2);
 	}
 
 	
@@ -78,11 +80,23 @@ public class CommonPagePO extends AbstractPage {
 		//waitForControlVisible(driver, CommonPageUI.DYNAMIC_DROP_DOWN_CLICK, value);
 		clickToElement(driver, CommonPageUI.DYNAMIC_DROP_DOWN_CLICK);
 	}
+	
+	public void clickOnDropdownTextbox(String value) {
+		//waitForControlVisible(driver, CommonPageUI.DYNAMIC_DROP_DOWN_CLICK, value);
+		clickToElement(driver, CommonPageUI.DYNAMIC_DROP_DOWN_ICON_TEXTBOX, value);
+	}
 
 	public void selectOneValueFromDynamicDropdownListWithDynamicData(String value, String selectedText) {
 		//waitForControlVisible(driver, CommonPageUI.DYNAMIC_DROP_DOWN_VALUE, value);
 		clickToElement(driver, CommonPageUI.DYNAMIC_DROP_DOWN_VALUE, value, selectedText);
 		waitForControlInvisible(driver, CommonPageUI.LOADING_BAR);
+	}
+	
+	public void selectDynamicValueFromDropdownList(String value) {
+		waitForControlVisible(driver, CommonPageUI.DYNAMIC_DROP_DOWN_VALUE_TEXTBOX, value);
+		hoverMouse(driver, CommonPageUI.DYNAMIC_DROP_DOWN_VALUE_TEXTBOX, value);
+		clickToElement(driver, CommonPageUI.DYNAMIC_DROP_DOWN_VALUE_TEXTBOX,value);
+	
 	}
 	/*--------------------------------------------------------*/
 
@@ -177,7 +191,13 @@ public class CommonPagePO extends AbstractPage {
 	/*----------------------------PressKey----------------------------*/
 	public void pressKeyOnDynamicTextbox(String value) {
 		waitForControlVisible(driver, CommonPageUI.DYNAMIC_INPUT_TEXTBOX, value);
-		dynamicKeyPress(driver, CommonPageUI.DYNAMIC_INPUT_TEXTBOX, value);
+		dynamicEnterKeyPress(driver, CommonPageUI.DYNAMIC_INPUT_TEXTBOX, value);
+		waitForControlInvisible(driver, CommonPageUI.LOADING_BAR);
+	}
+	
+	public void pressTabKeyOnDynamicTextbox(String value) {
+		waitForControlVisible(driver, CommonPageUI.DYNAMIC_INPUT_TEXTBOX, value);
+		dynamicTabKeyPress(driver, CommonPageUI.DYNAMIC_INPUT_TEXTBOX, value);
 		waitForControlInvisible(driver, CommonPageUI.LOADING_BAR);
 	}
 
@@ -259,6 +279,13 @@ public class CommonPagePO extends AbstractPage {
 		clickToElement(driver, CommonPageUI.MENU_DYNAMIC_LINK, "/DCM_UI/create-location-group", "Create");
 		waitForControlInvisible(driver, CommonPageUI.LOADING_BAR);
 		return PageFactoryManager.getCreateLocationGroupPage(driver);
+	}
+	
+	public CostMaintainPagePO openCostMaintainPage(WebDriver driver) {
+		clickToElement(driver, CommonPageUI.MENU_DYNAMIC_LINK, "#", "Cost");
+		clickToElement(driver, CommonPageUI.MENU_DYNAMIC_LINK, "/DCM_UI/cost-maintenance", "Maintain");
+		waitForControlInvisible(driver, CommonPageUI.LOADING_BAR);
+		return PageFactoryManager.getCostMaintainPage(driver);
 	}
 
 }

@@ -31,7 +31,7 @@ Feature: OFFER SEARCH FUNCTION
     And I open "/DCM_UI/offer-search" "Search" screen
     When I input to "offerName" text-box with data "<OfferDesc>"
     And I input to "vendor" text-box with data "<VendorNumber>"
-    And I select a Vendor from smart search list with data "<VendorNumber>" and "<VendorType>"
+    And I select a value from smart search list with "<VendorNumber>" and "<VendorType>"
     And I input to "submittedTo" text-box with data "<Assigned To>"
     And I select a value from smart search list with data "<Assigned To>"
     And I click on "btn-search" button
