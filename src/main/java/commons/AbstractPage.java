@@ -504,6 +504,11 @@ public class AbstractPage {
 		  return query;
 	}
 	
+	public String formatSQLFromAndWhere(String query, String database) {
+		  query = String.format(query, database);
+		  return query;
+	}
+	
 	
 	
 	

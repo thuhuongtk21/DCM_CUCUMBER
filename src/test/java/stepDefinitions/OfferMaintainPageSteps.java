@@ -14,17 +14,15 @@ import pages.PageFactoryManager;
 
 public class OfferMaintainPageSteps extends AbstractPage {
 	WebDriver driver;
-	private CommonPagePO commonPage;
-	private AbstractTest abstractTest;
 	//private LoginPagePO loginPage;
 	private OfferMaintainPO offerMaintainPage;
 	String username, password;
 
 	public OfferMaintainPageSteps() {
 		driver = Hooks.openBrowser();
-		commonPage = PageFactoryManager.getCommonPage(driver);
+		PageFactoryManager.getCommonPage(driver);
 		offerMaintainPage = PageFactoryManager.getOfferMaintainPage(driver);
-		abstractTest = PageFactoryManager.getAbstractTestPage(driver);
+		PageFactoryManager.getAbstractTestPage(driver);
 
 	}
 	
@@ -35,32 +33,7 @@ public class OfferMaintainPageSteps extends AbstractPage {
 		abstractTest.verifyEquals(actualValue1, expectedValue);
 	}*/
 	
-	@Then("^I verify expected data at \"(.*?)\" textbox with actual data of \"(.*?)\" from \"(.*?)\" \"(.*?)\" \"(.*?)\" \"(.*?)\"$")
-	public void iVerifyExpectedDataAtTextboxWithActualDataFromDatabase(String textboxName, String columnValue, String schema, String tableName, String columnName, String value) throws Exception {
-		String expectedValue = commonPage.getDynamicValueInDynamicTextbox(textboxName, "value");		
-		String actualValue = commonPage.getInforFromOfferTable(columnValue, schema, tableName, columnName, value);
-		System.out.println("Expected value = "+expectedValue);
-		System.out.println("Actual value = "+actualValue);
-		abstractTest.verifyEquals(actualValue, expectedValue);
-	}
 	
-	@Then("^I verify expected data at \"(.*?)\" textarea with actual data of \"(.*?)\" from \"(.*?)\" \"(.*?)\" \"(.*?)\" \"(.*?)\"$")
-	public void iVerifyExpectedDataAtTextareaWithActualDataFromDatabase(String textareName, String columnValue, String schema, String tableName, String columnName, String value) throws Exception {
-		String expectedValue = commonPage.getDynamicValueInDynamicTextarea(textareName, "value");		
-		String actualValue = commonPage.getInforFromOfferTable(columnValue, schema, tableName, columnName, value);
-		System.out.println("Expected value = "+expectedValue);
-		System.out.println("Actual value = "+actualValue);
-		abstractTest.verifyEquals(actualValue, expectedValue);
-	}
-	
-	@Then("^I verify expected data at \"(.*?)\" label with actual data of \"(.*?)\" from \"(.*?)\" \"(.*?)\" \"(.*?)\" \"(.*?)\"$")
-	public void iVerifyExpectedDataAtLabelWithActualDataFromDatabase(String labelName, String columnValue, String schema, String tableName, String columnName, String value) throws Exception {
-		String expectedValue = commonPage.getDynamicValueInDynamicLabel(labelName);	
-		String actualValue = commonPage.getInforFromOfferTable(columnValue, schema, tableName, columnName, value);
-		System.out.println("Expected value = "+expectedValue);
-		System.out.println("Actual value = "+actualValue);
-		abstractTest.verifyEquals(actualValue, expectedValue);
-	}
 	
 	@When("^I click on Search icon$")
 	public void iClickOnSearchIcon() {

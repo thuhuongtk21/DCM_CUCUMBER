@@ -4,7 +4,7 @@ Feature: OFFER DETAILS FUNCTION
   I want to search and view offer information
   So that I can verify search function work well
 
-  Scenario Outline: [TC-01]: Search with Offer Description
+  Scenario Outline: [TC-01]: Type = Trade Allowance - Status = Submitted
     Given I login to application
     And I open "/DCM_UI/offer-search" "Search" screen
     When I input to "offerId" text-box with data "<OfferID>"

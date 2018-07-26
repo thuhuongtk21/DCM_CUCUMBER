@@ -3,6 +3,9 @@ package commons;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -57,6 +60,14 @@ public class AbstractTest extends AbstractPage{
 			int number = random.nextInt(999999);
 			return number;
 		}
+	  
+	  public String formatDateToYyyyMmDd(String date) throws Exception {		  
+			SimpleDateFormat dt = new SimpleDateFormat("mm/dd/yyyyy"); 
+			Date date_s = dt.parse(date); 
+			SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-mm-dd");
+			System.out.println(dt1.format(date_s));
+			return dt1.format(date_s);
+	  }
 	  
 	  protected boolean verifyPassed(boolean condition, boolean flag) {
 		  boolean pass = true;

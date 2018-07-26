@@ -15,6 +15,7 @@ Feature: OFFER SEARCH FUNCTION
     And I verify expected data at "commentId" textarea with actual data of "PUBLIC_CMT_TXT" from "<Schema>" "<TableName>" "<ColumnName>" "<OfferID>"
     And I verify expected data at "HEBCommentId" textarea with actual data of "PRIV_HEB_CMT_TXT" from "<Schema>" "<TableName>" "<ColumnName>" "<OfferID>"
     And I verify expected data at "offerStatusId" label with actual data of "OFR_STAT_CD" from "<Schema>" "<TableName>" "<ColumnName>" "<OfferID>"
+   
 
     Examples: 
       | OfferID |  | Schema  | TableName | ColumnName |

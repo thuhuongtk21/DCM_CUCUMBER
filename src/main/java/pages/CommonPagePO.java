@@ -50,6 +50,13 @@ public class CommonPagePO extends AbstractPage {
 		return getAttributeValue(driver, CommonPageUI.DYNAMIC_INPUT_TEXTAREA, textareName, attributeName);
 	}
 	
+	/*----------------------------DATE TIME----------------------------*/
+	
+	public String getDynamicDateValueTextbox(String textboxName, String attributeName) {
+		waitForControlVisible(driver, CommonPageUI.DYNAMIC_INPUT_TEXTBOX, textboxName);
+		return getAttributeValue(driver, CommonPageUI.DYNAMIC_INPUT_TEXTBOX, textboxName, attributeName);		
+	}
+	
 	/*----------------------------SMART SEARCH WITH ONE DYNAMIC VALUE----------------------------*/
 	public void selectDynamicValueFromSmartSearchListWithOneDynamicValue(String value) {
 		waitForControlVisible(driver, CommonPageUI.SMART_SEARCH_LIST);
@@ -202,12 +209,45 @@ public class CommonPagePO extends AbstractPage {
 	}
 
 	/*----------------------------Get data from Database----------------------------*/
-	public String getInforFromOfferTable(String columValue, String schema, String tableName, String columnName,
+	public String getInforFromDynamicTable(String columnValue, String schema, String tableName, String columnName,
 			String value) throws Exception, Exception {
 		String columnValue_Output = null;
 		Connection connection = connectToDatabase();
 		Statement st = connection.createStatement();
 		String query = formatSQL(SQL.SQL_QUERY_FROM_ONE_TABLE, schema, tableName, columnName, value);
+		System.out.println("Query = " + query);
+		ResultSet rs = st.executeQuery(query);
+		while (rs.next()) {
+			columnValue_Output = rs.getString(columnValue).trim();
+			System.out.println(columnValue + " from Database = " + columnValue_Output);
+		}
+		st.close();
+		return columnValue_Output;
+
+	}
+	
+	/*public String getInforFromDatabase(List<String> listColumValue, String database) throws Exception, Exception {
+		String columnValue_Output = null;
+		Connection connection = connectToDatabase();
+		Statement st = connection.createStatement();
+		String query = formatSQLFromAndWhere(SQL.DYNAMIC_SQL_QUERY, database);
+		System.out.println("Query = " + query);
+		ResultSet rs = st.executeQuery(query);
+		for(String columnValue:listColumValue) {
+			columnValue_Output = rs.getString(columnValue).trim();
+			System.out.println(columnValue + " from Database = " + columnValue_Output);
+		}
+		
+		st.close();
+		return columnValue_Output;
+
+	}*/
+	
+	public String getInforFromDatabase(String columValue, String database) throws Exception, Exception {
+		String columnValue_Output = null;
+		Connection connection = connectToDatabase();
+		Statement st = connection.createStatement();
+		String query = formatSQLFromAndWhere(SQL.DYNAMIC_SQL_QUERY, database);
 		System.out.println("Query = " + query);
 		ResultSet rs = st.executeQuery(query);
 		while (rs.next()) {
@@ -218,6 +258,8 @@ public class CommonPagePO extends AbstractPage {
 		return columnValue_Output;
 
 	}
+	
+	
 
 	/*----------------------------OPEN DYNAMIC PAGES----------------------------*/
 	public OfferCreatePO openOfferCreatePage(WebDriver driver) {
@@ -286,6 +328,13 @@ public class CommonPagePO extends AbstractPage {
 		clickToElement(driver, CommonPageUI.MENU_DYNAMIC_LINK, "/DCM_UI/cost-maintenance", "Maintain");
 		waitForControlInvisible(driver, CommonPageUI.LOADING_BAR);
 		return PageFactoryManager.getCostMaintainPage(driver);
+	}
+	
+	public DealsMaintainPO openDealMaintainPage(WebDriver driver) {
+		clickToElement(driver, CommonPageUI.MENU_DYNAMIC_LINK, "#", "Deals");
+		clickToElement(driver, CommonPageUI.MENU_DYNAMIC_LINK, "/DCM_UI/deal-maintenance", "Maintain");
+		waitForControlInvisible(driver, CommonPageUI.LOADING_BAR);
+		return PageFactoryManager.getDealsMaintainPage(driver);
 	}
 
 }

@@ -16,7 +16,7 @@ public class CommonPageSteps extends AbstractPage {
 	private CommonPagePO commonPage;
 	private AbstractTest abstractTest;
 	private LoginPagePO loginPage;
-	String username, password;
+	//String username, password;
 
 	public CommonPageSteps() {
 		driver = Hooks.openBrowser();
@@ -99,7 +99,7 @@ public class CommonPageSteps extends AbstractPage {
 	public void iPressEnterKeyOnDynamicTextbox(String value) {
 		commonPage.pressKeyOnDynamicTextbox(value);
 	}
-	
+
 	@When("^I press TAB key on \"(.*?)\" text-box$")
 	public void iPressTabKeyOnDynamicTextbox(String value) {
 		commonPage.pressTabKeyOnDynamicTextbox(value);
@@ -108,20 +108,83 @@ public class CommonPageSteps extends AbstractPage {
 	@When("^I verify expected data at \"(.*?)\" textbox with actual data$")
 	public void iVerifyExpectedDataWithActualData(String textboxName, String actualValue) {
 		String expectedValue = commonPage.getDynamicValueInDynamicTextbox(textboxName, "value"); // "value" is in xpath
+		abstractTest.verifyEquals(actualValue, expectedValue);	}
+
+	
+	
+	@Then("^I verify expected data at \"(.*?)\" textbox with actual data of \"(.*?)\" from \"(.*?)\" \"(.*?)\" \"(.*?)\" \"(.*?)\"$")
+	public void iVerifyExpectedDataAtTextboxWithActualDataFromDatabase(String textboxName, String columnValue, String schema, String tableName, String columnName, String value) throws Exception {
+		String expectedValue = commonPage.getDynamicValueInDynamicTextbox(textboxName, "value");		
+		String actualValue = commonPage.getInforFromDynamicTable(columnValue, schema, tableName, columnName, value);
+		System.out.println("Expected value = "+expectedValue);
+		System.out.println("Actual value = "+actualValue);
 		abstractTest.verifyEquals(actualValue, expectedValue);
 	}
-
-	@Then("^I verify expected data at \"(.*?)\" textbox with actual data in \"(.*?)\" \"(.*?)\" table \"(.*?)\" column and \"(.*?)\" value$")
-	public void iVerifyExpectedDataAtTextboxWithActualDataInDB(String textboxName, String schema, String tableName,
-			String columnName, String value) {
-		// String expectedValue =
-		// commonPage.getDynamicValueInDynamicTextbox(textboxName, "value"); // "value"
-		// is in xpath
-		// String actualValue = offerTable.getDataFromDatabase(schema, tableName,
-		// columnName, value);
-		// abstractTest.verifyEquals(actualValue, expectedValue);
+	
+	@Then("^I verify expected data at \"(.*?)\" textarea with actual data of \"(.*?)\" from \"(.*?)\" \"(.*?)\" \"(.*?)\" \"(.*?)\"$")
+	public void iVerifyExpectedDataAtTextareaWithActualDataFromDatabase(String textareName, String columnValue, String schema, String tableName, String columnName, String value) throws Exception {
+		String expectedValue = commonPage.getDynamicValueInDynamicTextarea(textareName, "value");		
+		String actualValue = commonPage.getInforFromDynamicTable(columnValue, schema, tableName, columnName, value);
+		System.out.println("Expected value = "+expectedValue);
+		System.out.println("Actual value = "+actualValue);
+		abstractTest.verifyEquals(actualValue, expectedValue);
 	}
-
+	
+	@Then("^I verify expected data at \"(.*?)\" label with actual data of \"(.*?)\" from \"(.*?)\" \"(.*?)\" \"(.*?)\" \"(.*?)\"$")
+	public void iVerifyExpectedDataAtLabelWithActualDataFromDatabase(String labelName, String columnValue, String schema, String tableName, String columnName, String value) throws Exception {
+		String expectedValue = commonPage.getDynamicValueInDynamicLabel(labelName);	
+		String actualValue = commonPage.getInforFromDynamicTable(columnValue, schema, tableName, columnName, value);
+		System.out.println("Expected value = "+expectedValue);
+		System.out.println("Actual value = "+actualValue);
+		abstractTest.verifyEquals(actualValue, expectedValue);
+	}
+	
+	@Then("^I verify expected data at \"(.*?)\" date time textbox with actual data of \"(.*?)\" from \"(.*?)\" \"(.*?)\" \"(.*?)\" \"(.*?)\"$")
+	public void iVerifyExpectedDataAtDateTimeTextboxWithActualDatafFromDatabase(String textboxName, String columnValue, String schema, String tableName, String columnName, String value) throws Exception  {	  
+		String date = commonPage.getDynamicDateValueTextbox(textboxName, "value");
+		String expectedValue = abstractTest.formatDateToYyyyMmDd(date);
+		String actualValue = commonPage.getInforFromDynamicTable(columnValue, schema, tableName, columnName, value);
+		abstractTest.verifyEquals(actualValue, expectedValue);
+	}
+	
+	/*@Then("^I verify expected data at \"(.*?)\" textbox with actual data of \"(.*?)\" from \"(.*?)\" \"(.*?)\"$")
+	public void iVerifyExpectedDataAtTextboxWithActualDataOfFrom(String textboxName, String columValue, String database) throws Exception {
+		String expectedValue = commonPage.getDynamicValueInDynamicTextbox(textboxName, "value");		
+		String actualValue = commonPage.getInforFromDatabase(columValue, from, where);
+		System.out.println("Expected value = "+expectedValue);
+		System.out.println("Actual value = "+actualValue);
+		abstractTest.verifyEquals(actualValue, expectedValue);
+	}*/
+	
+	@Then("^I verify expected data at \"(.*?)\" textbox with actual data \"(.*?)\" from \"(.*?)\"$")
+	public void iVerifyExpectedDataAtTextboxWithActualDataOfFrom(String textboxName, String columValue, String database) throws Exception {
+		String expectedValue = commonPage.getDynamicValueInDynamicTextbox(textboxName, "value");		
+		String actualValue = commonPage.getInforFromDatabase(columValue, database);
+		System.out.println("Expected value = "+expectedValue);
+		System.out.println("Actual value = "+actualValue);
+		abstractTest.verifyEquals(actualValue, expectedValue);
+	}
+	
+	@Then("^I verify expected data at \"(.*?)\" label with actual data of \"(.*?)\" from \"(.*?)\" \"(.*?)\"$")
+	public void iVerifyExpectedDataAtLabelWithActualDataFromDatabase(String labelName, String columValue, String database) throws Exception {
+		String expectedValue = commonPage.getDynamicValueInDynamicLabel(labelName);		
+		String actualValue = commonPage.getInforFromDatabase(columValue, database);
+		System.out.println("Expected value = "+expectedValue);
+		System.out.println("Actual value = "+actualValue);
+		//abstractTest.verifyEquals(actualValue, expectedValue);		
+		abstractTest.verifyTrue(actualValue.contains(expectedValue));
+	}
+	
+	/*@Then("^I verify expected data at \"(.*?)\" label with actual data of \"(.*?)\" \"(.*?)\" from \"(.*?)\" \"(.*?)\"$")
+	public void iVerifyExpectedDataAtLabelWithActualDataFromDatabase(String labelName, List<String> listColumValue, String from, String where) throws Exception {
+		String expectedValue = commonPage.getDynamicValueInDynamicLabel(labelName);		
+		String actualValue = commonPage.getInforFromDatabase(listColumValue, from, where);
+		System.out.println("Expected value = "+expectedValue);
+		System.out.println("Actual value = "+actualValue);
+		//abstractTest.verifyEquals(actualValue, expectedValue);		
+		//abstractTest.verifyTrue(actualValue.contains(expectedValue));
+	}
+*/
 	@When("^I get all data on all pages in \"(.*?)\"$")
 	public void iGetAllDataOnAllPages(String value) {
 		commonPage.getListItemOfOneColumnOnOnePage(value);
@@ -184,6 +247,9 @@ public class CommonPageSteps extends AbstractPage {
 			break;
 		case "/DCM_UI/cost-maintenance|Maintain":
 			commonPage.openCostMaintainPage(driver);
+			break;
+		case "/DCM_UI/deal-maintenance|Maintain":
+			commonPage.openDealMaintainPage(driver);
 			break;
 
 		}
