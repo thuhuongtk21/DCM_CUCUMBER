@@ -24,5 +24,6 @@ public class CommonPageUI {
 	public static final String DYNAMIC_CONTEXT_MENU = "//a[text()='%s']";
 	public static final String DYNAMIC_SCREEN_NAME = "//div[text()='%s']";
 	public static final String DYNAMIC_POPUP_INFOR = "//*[@id='info-window-table']//span[text()='Trade Allowance']";
+	public static final String DYNAMIC_TOOLTIP = "//span[@title=\"%s\"]";
 
 }

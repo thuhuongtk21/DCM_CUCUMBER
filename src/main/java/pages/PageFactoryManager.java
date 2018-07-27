@@ -37,6 +37,7 @@ public class PageFactoryManager {
 	private static DealsSODLTransactionPO dealsSODLTransactionPage;
 	private static BrowseDealAndCostPagePO browseDealAndCostPage;
 	private static LGCreatePO createLocationGroupPage;
+	private static LGMaintainPO locationGroupMaintainPage;
 	private static CostMaintainPagePO costMaintainPage;
 	private static CommonPagePO commonPage;
 
@@ -167,6 +168,13 @@ public class PageFactoryManager {
 			return new LGCreatePO(driver_);
 		}
 		return createLocationGroupPage;
+	}
+	
+	public static LGMaintainPO getLocationGroupMaintainPage(WebDriver driver_) {
+		if (locationGroupMaintainPage == null) {
+			return new LGMaintainPO(driver_);
+		}
+		return locationGroupMaintainPage;
 	}
 	
 	public static CostMaintainPagePO getCostMaintainPage(WebDriver driver_) {

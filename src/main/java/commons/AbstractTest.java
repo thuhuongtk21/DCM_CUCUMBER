@@ -61,12 +61,35 @@ public class AbstractTest extends AbstractPage{
 			return number;
 		}
 	  
-	  public String formatDateToYyyyMmDd(String date) throws Exception {		  
-			SimpleDateFormat dt = new SimpleDateFormat("mm/dd/yyyyy"); 
-			Date date_s = dt.parse(date); 
-			SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-mm-dd");
-			System.out.println(dt1.format(date_s));
-			return dt1.format(date_s);
+	  public String formatDateTime(String date, String dateType) throws Exception {	
+		  Date input_dateTime_Parse = null;
+		  SimpleDateFormat input_dateTime_Format = null;
+		  SimpleDateFormat simpleFormat_dt = null;
+		  switch (dateType) {
+			case "@ yyyy-MM-dd HH:mm:ss":
+				input_dateTime_Format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				input_dateTime_Parse = input_dateTime_Format.parse(date);
+				simpleFormat_dt = new SimpleDateFormat("MM/dd/yyyy @ HH:mm:ss");
+				System.out.println(simpleFormat_dt.format(input_dateTime_Parse));
+				System.out.println("SimpleDateFormat =" +simpleFormat_dt);
+				break;
+			case "yyyy-MM-dd HH:mm:ss":
+				input_dateTime_Format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				input_dateTime_Parse = input_dateTime_Format.parse(date);
+				simpleFormat_dt = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+				System.out.println(simpleFormat_dt.format(input_dateTime_Parse));
+				System.out.println("SimpleDateFormat =" +simpleFormat_dt);
+				break;
+			case "yyyy-mm-dd":
+				input_dateTime_Format = new SimpleDateFormat("yyyy-mm-dd");
+				input_dateTime_Parse = input_dateTime_Format.parse(date);
+				simpleFormat_dt = new SimpleDateFormat("mm-dd-yyyy");
+				System.out.println(simpleFormat_dt.format(input_dateTime_Parse));
+				System.out.println("SimpleDateFormat =" +simpleFormat_dt);
+				break;
+				
+			}
+			return simpleFormat_dt.format(input_dateTime_Parse).toString();
 	  }
 	  
 	  protected boolean verifyPassed(boolean condition, boolean flag) {

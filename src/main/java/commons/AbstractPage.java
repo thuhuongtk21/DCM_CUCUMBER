@@ -504,6 +504,11 @@ public class AbstractPage {
 		  return query;
 	}
 	
+	public String formatSQLFromTwoTable(String query, String schema, String tableName, String tableName1, String onCondition, String columnName, String value) {
+		  query = String.format(query, schema,tableName, schema, tableName1, onCondition, columnName, value );
+		  return query;
+	}
+	
 	public String formatSQLFromAndWhere(String query, String database) {
 		  query = String.format(query, database);
 		  return query;

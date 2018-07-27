@@ -2,6 +2,7 @@ package pages;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +11,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 
 import commons.AbstractPage;
+import commons.AbstractTest;
 import interfaces.CommonPageUI;
 import interfaces.CostMaintainPageUI;
 import interfaces.OfferSearchUI;
@@ -17,25 +19,28 @@ import interfaces.SQL;
 
 public class CommonPagePO extends AbstractPage {
 	WebDriver driver;
+	private AbstractTest abstractTest;
 
 	public CommonPagePO(WebDriver driver_) {
 		this.driver = driver_;
+		abstractTest = PageFactoryManager.getAbstractTestPage(driver);
 	}
+	
 
 	/*----------------------------TEXT-BOX----------------------------*/
 	public void inputDynamicValueToDynamicTextBox(String textboxName, String value) {
 		waitForControlVisible(driver, CommonPageUI.DYNAMIC_INPUT_TEXTBOX, textboxName);
 		sendKeyToElement(driver, CommonPageUI.DYNAMIC_INPUT_TEXTBOX, textboxName, value);
-		//waitForControlInvisible(driver, CommonPageUI.LOADING_BAR);
+		// waitForControlInvisible(driver, CommonPageUI.LOADING_BAR);
 	}
 
 	public String getDynamicValueInDynamicTextbox(String textboxName, String attributeName) {
 		waitForControlVisible(driver, CommonPageUI.DYNAMIC_INPUT_TEXTBOX, textboxName);
 		return getAttributeValue(driver, CommonPageUI.DYNAMIC_INPUT_TEXTBOX, textboxName, attributeName);
 	}
-	
+
 	public void clickOnDynamicTextbox(String value) {
-		//waitForControlVisible(driver, CommonPageUI.DYNAMIC_DROP_DOWN_CLICK, value);
+		// waitForControlVisible(driver, CommonPageUI.DYNAMIC_DROP_DOWN_CLICK, value);
 		clickToElement(driver, CommonPageUI.DYNAMIC_INPUT_TEXTBOX, value);
 	}
 
@@ -49,14 +54,14 @@ public class CommonPagePO extends AbstractPage {
 		waitForControlVisible(driver, CommonPageUI.DYNAMIC_INPUT_TEXTAREA, textareName);
 		return getAttributeValue(driver, CommonPageUI.DYNAMIC_INPUT_TEXTAREA, textareName, attributeName);
 	}
-	
+
 	/*----------------------------DATE TIME----------------------------*/
-	
+
 	public String getDynamicDateValueTextbox(String textboxName, String attributeName) {
 		waitForControlVisible(driver, CommonPageUI.DYNAMIC_INPUT_TEXTBOX, textboxName);
-		return getAttributeValue(driver, CommonPageUI.DYNAMIC_INPUT_TEXTBOX, textboxName, attributeName);		
+		return getAttributeValue(driver, CommonPageUI.DYNAMIC_INPUT_TEXTBOX, textboxName, attributeName);
 	}
-	
+
 	/*----------------------------SMART SEARCH WITH ONE DYNAMIC VALUE----------------------------*/
 	public void selectDynamicValueFromSmartSearchListWithOneDynamicValue(String value) {
 		waitForControlVisible(driver, CommonPageUI.SMART_SEARCH_LIST);
@@ -69,41 +74,39 @@ public class CommonPagePO extends AbstractPage {
 		waitForControlInvisible(driver, CommonPageUI.LOADING_BAR);
 	}
 
-
 	/*----------------------------SMART SEARCH WITH TWO DYNAMIC VALUE----------------------------*/
 	public void selectDynamicValueFromSmartSearchListWithTwoDynamicValue(String value1, String value2) {
 		waitForControlVisible(driver, CommonPageUI.SMART_SEARCH_LIST);
 		getListElementWithTwoDynamicvalue(driver, CommonPageUI.SMART_SEARCH_LIST, value1, value2);
 	}
 
-	
 	/*----------------------------DROP_DOWN----------------------------*/
 	public void clickOnDropdownIcon(String value) {
-		//waitForControlVisible(driver, CommonPageUI.DYNAMIC_DROP_DOWN_CLICK, value);
+		// waitForControlVisible(driver, CommonPageUI.DYNAMIC_DROP_DOWN_CLICK, value);
 		clickToElement(driver, CommonPageUI.DYNAMIC_DROP_DOWN_CLICK, value);
 	}
-	
+
 	public void clickOnDropdownList() {
-		//waitForControlVisible(driver, CommonPageUI.DYNAMIC_DROP_DOWN_CLICK, value);
+		// waitForControlVisible(driver, CommonPageUI.DYNAMIC_DROP_DOWN_CLICK, value);
 		clickToElement(driver, CommonPageUI.DYNAMIC_DROP_DOWN_CLICK);
 	}
-	
+
 	public void clickOnDropdownTextbox(String value) {
-		//waitForControlVisible(driver, CommonPageUI.DYNAMIC_DROP_DOWN_CLICK, value);
+		// waitForControlVisible(driver, CommonPageUI.DYNAMIC_DROP_DOWN_CLICK, value);
 		clickToElement(driver, CommonPageUI.DYNAMIC_DROP_DOWN_ICON_TEXTBOX, value);
 	}
 
 	public void selectOneValueFromDynamicDropdownListWithDynamicData(String value, String selectedText) {
-		//waitForControlVisible(driver, CommonPageUI.DYNAMIC_DROP_DOWN_VALUE, value);
+		// waitForControlVisible(driver, CommonPageUI.DYNAMIC_DROP_DOWN_VALUE, value);
 		clickToElement(driver, CommonPageUI.DYNAMIC_DROP_DOWN_VALUE, value, selectedText);
 		waitForControlInvisible(driver, CommonPageUI.LOADING_BAR);
 	}
-	
+
 	public void selectDynamicValueFromDropdownList(String value) {
 		waitForControlVisible(driver, CommonPageUI.DYNAMIC_DROP_DOWN_VALUE_TEXTBOX, value);
 		hoverMouse(driver, CommonPageUI.DYNAMIC_DROP_DOWN_VALUE_TEXTBOX, value);
-		clickToElement(driver, CommonPageUI.DYNAMIC_DROP_DOWN_VALUE_TEXTBOX,value);
-	
+		clickToElement(driver, CommonPageUI.DYNAMIC_DROP_DOWN_VALUE_TEXTBOX, value);
+
 	}
 	/*--------------------------------------------------------*/
 
@@ -120,23 +123,30 @@ public class CommonPagePO extends AbstractPage {
 		clickToElement(driver, CommonPageUI.DYNAMIC_BUTTON, value);
 		waitForControlInvisible(driver, CommonPageUI.LOADING_BAR);
 	}
-	
+
 	/*----------------------------CONTEXT MENU----------------------------*/
-	
+
 	public void rightClickOnARecord(String value) {
 		waitForControlVisible(driver, CommonPageUI.DYNAMIC_SELECTED_RECORD, value);
 		rightClick(driver, CommonPageUI.DYNAMIC_SELECTED_RECORD, value);
 	}
-	
+
 	public void clickOnADynamicContextMenu(String value) {
 		waitForControlVisible(driver, CommonPageUI.DYNAMIC_CONTEXT_MENU, value);
 		clickToElement(driver, CommonPageUI.DYNAMIC_CONTEXT_MENU, value);
 		waitForControlInvisible(driver, CommonPageUI.DYNAMIC_CONTEXT_MENU);
 	}
-	
+
 	public boolean isSelectedScreenOpenCorrectly(String value) {
 		waitForControlVisible(driver, CommonPageUI.DYNAMIC_SCREEN_NAME, value);
 		return isControlDisplayed(driver, CommonPageUI.DYNAMIC_SCREEN_NAME, value);
+	}
+	
+	/*----------------------------TOOLTIP----------------------------*/
+	public boolean isTooltipShow(String toolTipMessage, String value) {
+		waitForControlVisible(driver, CommonPageUI.DYNAMIC_ICON,value);
+		hoverMouse(driver, CommonPageUI.DYNAMIC_ICON, value);
+		return isControlDisplayed(driver, CommonPageUI.DYNAMIC_TOOLTIP,toolTipMessage);
 	}
 
 	/*----------------------------GET LIST DATA FROM SEARCH RESULT----------------------------*/
@@ -153,7 +163,7 @@ public class CommonPagePO extends AbstractPage {
 			clickOnPageNumber(driver, CommonPageUI.DYNAMIC_PAGE, page);
 			waitForControlInvisible(driver, CommonPageUI.LOADING_BAR);
 			getListItemOnOnePage(driver, CommonPageUI.GET_DATA_DYNAMIC_COLUMN, value, addToFinalList);
-			System.out.println("List of item = "+ addToFinalList);
+			System.out.println("List of item = " + addToFinalList);
 
 		} while (isControlDisplayed(driver, CommonPageUI.ENABLE_NEXT_PAGE));
 	}
@@ -163,15 +173,16 @@ public class CommonPagePO extends AbstractPage {
 		List<String> addToFinalList = new ArrayList<String>();
 		waitForControlInvisible(driver, CommonPageUI.LOADING_BAR);
 		int countColumn = getSizeElement(driver, CommonPageUI.DYNAMIC_NUMBER_OF_COLUMN, value);
-		for(int columnNumber = 0; columnNumber < countColumn; columnNumber++) {
+		for (int columnNumber = 0; columnNumber < countColumn; columnNumber++) {
 			String columnNumber_Convert = Integer.toString(columnNumber);
 			getListItemOnOnePage(driver, CommonPageUI.GET_DATA_DYNAMIC_COLUMN, columnNumber_Convert, addToFinalList);
-			//System.out.println("List of Item on column "+columnNumber+ " and page "+page+"="+addToFinalList);
+			// System.out.println("List of Item on column "+columnNumber+ " and page
+			// "+page+"="+addToFinalList);
 		}
-		System.out.println("Final list of column "+value+" = "+addToFinalList);
+		System.out.println("Final list of column " + value + " = " + addToFinalList);
 
 	}
-	
+
 	public void getListItemOfAllColumnsOnAllPages(String value) {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
@@ -184,24 +195,26 @@ public class CommonPagePO extends AbstractPage {
 			clickOnPageNumber(driver, CommonPageUI.DYNAMIC_PAGE, page);
 			waitForControlInvisible(driver, CommonPageUI.LOADING_BAR);
 			int countColumn = getSizeElement(driver, CommonPageUI.DYNAMIC_NUMBER_OF_COLUMN, value);
-			for(int columnNumber = 0; columnNumber < countColumn; columnNumber++) {
+			for (int columnNumber = 0; columnNumber < countColumn; columnNumber++) {
 				String columnNumber_Convert = Integer.toString(columnNumber);
-				getListItemOnOnePage(driver, CommonPageUI.GET_DATA_DYNAMIC_COLUMN, columnNumber_Convert, addToFinalList);
-				//System.out.println("List of Item on column "+columnNumber+ " and page "+page+"="+addToFinalList);
+				getListItemOnOnePage(driver, CommonPageUI.GET_DATA_DYNAMIC_COLUMN, columnNumber_Convert,
+						addToFinalList);
+				// System.out.println("List of Item on column "+columnNumber+ " and page
+				// "+page+"="+addToFinalList);
 			}
-			
-			System.out.println("List of item = "+ addToFinalList);
+
+			System.out.println("List of item = " + addToFinalList);
 
 		} while (isControlDisplayed(driver, CommonPageUI.ENABLE_NEXT_PAGE));
 	}
 
 	/*----------------------------PressKey----------------------------*/
-	public void pressKeyOnDynamicTextbox(String value) {
+	public void pressEnterKeyOnDynamicTextbox(String value) {
 		waitForControlVisible(driver, CommonPageUI.DYNAMIC_INPUT_TEXTBOX, value);
 		dynamicEnterKeyPress(driver, CommonPageUI.DYNAMIC_INPUT_TEXTBOX, value);
 		waitForControlInvisible(driver, CommonPageUI.LOADING_BAR);
 	}
-	
+
 	public void pressTabKeyOnDynamicTextbox(String value) {
 		waitForControlVisible(driver, CommonPageUI.DYNAMIC_INPUT_TEXTBOX, value);
 		dynamicTabKeyPress(driver, CommonPageUI.DYNAMIC_INPUT_TEXTBOX, value);
@@ -209,7 +222,7 @@ public class CommonPagePO extends AbstractPage {
 	}
 
 	/*----------------------------Get data from Database----------------------------*/
-	public String getInforFromDynamicTable(String columnValue, String schema, String tableName, String columnName,
+	public String db_GetInforFromOneDynamicTable_oneColumn(String columnValue, String schema, String tableName, String columnName,
 			String value) throws Exception, Exception {
 		String columnValue_Output = null;
 		Connection connection = connectToDatabase();
@@ -226,23 +239,277 @@ public class CommonPagePO extends AbstractPage {
 
 	}
 	
-	/*public String getInforFromDatabase(List<String> listColumValue, String database) throws Exception, Exception {
+	public List<String> db_GetInforFromOneDynamicTable_listColumn(String listColumnValue, String schema, String tableName,	String columnName, String value) throws Exception, Exception {
 		String columnValue_Output = null;
+		String[] myArray = listColumnValue.split(", ");
+		List<String> myList = new ArrayList<>();
+		for (String str : myArray) {
+			myList.add(str);
+		}
 		Connection connection = connectToDatabase();
 		Statement st = connection.createStatement();
-		String query = formatSQLFromAndWhere(SQL.DYNAMIC_SQL_QUERY, database);
+		String query = formatSQL(SQL.SQL_QUERY_FROM_ONE_TABLE, schema, tableName, columnName, value);
 		System.out.println("Query = " + query);
 		ResultSet rs = st.executeQuery(query);
-		for(String columnValue:listColumValue) {
-			columnValue_Output = rs.getString(columnValue).trim();
-			System.out.println(columnValue + " from Database = " + columnValue_Output);
-		}
-		
-		st.close();
-		return columnValue_Output;
+		List<String> textList = new ArrayList<>();
+		List<String> textList_spe = new ArrayList<>();
+		while (rs.next()) {
+			for (String columnValue : myList) {
+				{
+					columnValue_Output = rs.getString(columnValue).trim();
+					System.out.println(columnValue + " from Database = " + columnValue_Output);
+					{
+						switch (columnValue_Output) {
+						case "AP":
+							columnValue_Output = columnValue_Output.replace("AP", "WHS");
+							break;
+						case "DS":
+							columnValue_Output = columnValue_Output.replace("DS", "DSD");
+							
+							break;
+						}
+						switch (columnValue) {
 
-	}*/
+						case "RMIT_ST":
+						case "RMIT_ZIP5_CD":
+						case "RMIT_ZIP4_CD":
+							textList_spe.add(columnValue_Output);
+							System.out.println("swicth case = " + textList_spe);
+							break;
+						case "OFR_CRE8D_TS":
+						case "DELGTED_TS":
+						case "LST_UPDT_TS":
+							columnValue_Output = abstractTest.formatDateTime(columnValue_Output, "yyyy-MM-dd HH:mm:ss");
+							break;
+						case "OFR_CRE8_UID":
+						case "DELGTED_BY_UID":
+						case "LST_UPDT_UID":
+							columnValue_Output = columnValue_Output.replace("p165114", "p165114 Peters,Carrol");
+						}
+					}
+				}
+				textList.add(columnValue_Output);
+			}
+
+		}
+		st.close();
+		// String finalText = String.join(" - ", textList);
+		System.out.println("Final text = " + textList);
+		String final_Text = String.join(" ", textList);
+		System.out.println("Final text = " + final_Text);
+		return textList;
+
+	}
 	
+	public List<String> db_GetInforFromOneDynamicTable_listColumn_formatTime(String dateType, String listColumnValue, String schema, String tableName,	String columnName, String value) throws Exception, Exception {
+		String columnValue_Output = null;
+		String[] myArray = listColumnValue.split(", ");
+		List<String> myList = new ArrayList<>();
+		for (String str : myArray) {
+			myList.add(str);
+		}
+		Connection connection = connectToDatabase();
+		Statement st = connection.createStatement();
+		String query = formatSQL(SQL.SQL_QUERY_FROM_ONE_TABLE, schema, tableName, columnName, value);
+		System.out.println("Query = " + query);
+		ResultSet rs = st.executeQuery(query);
+		List<String> textList = new ArrayList<>();
+		List<String> textList_spe = new ArrayList<>();
+		while (rs.next()) {
+			for (String columnValue : myList) {
+				{
+					columnValue_Output = rs.getString(columnValue).trim();
+					System.out.println(columnValue + " from Database = " + columnValue_Output);
+					{
+						switch (columnValue_Output) {
+						case "AP":
+							columnValue_Output = columnValue_Output.replace("AP", "WHS");
+							break;
+						case "DS":
+							columnValue_Output = columnValue_Output.replace("DS", "DSD");
+							
+							break;
+						}
+						switch (columnValue) {
+
+						case "RMIT_ST":
+						case "RMIT_ZIP5_CD":
+						case "RMIT_ZIP4_CD":
+							textList_spe.add(columnValue_Output);
+							System.out.println("swicth case = " + textList_spe);
+							break;
+						case "OFR_CRE8D_TS":
+						case "DELGTED_TS":
+						case "LST_UPDT_TS":
+							columnValue_Output = abstractTest.formatDateTime(columnValue_Output, dateType);
+							break;
+						case "OFR_CRE8_UID":
+						case "DELGTED_BY_UID":
+						case "LST_UPDT_UID":
+							columnValue_Output = columnValue_Output.replace("p165114", "p165114 Peters,Carrol");
+						}
+					}
+				}
+				textList.add(columnValue_Output);
+			}
+
+		}
+		st.close();
+		// String finalText = String.join(" - ", textList);
+		System.out.println("Final text = " + textList);
+		String final_Text = String.join(" ", textList);
+		System.out.println("Final text = " + final_Text);
+		return textList;
+
+	}
+	
+
+	public List<String> db_GetInforFromTwoDynamicTable(String listColumnValue, String schema, String tableName,	String tableName1, String onCondition, String columnName, String value) throws Exception, Exception {
+		String columnValue_Output = null;
+		String[] myArray = listColumnValue.split(", ");
+		List<String> myList = new ArrayList<>();
+		for (String str : myArray) {
+			myList.add(str);
+		}
+		Connection connection = connectToDatabase();
+		Statement st = connection.createStatement();
+		String query = formatSQLFromTwoTable(SQL.DYNAMIC_SQL_TWO_TABLES, schema, tableName, tableName1, onCondition, columnName, value);
+		System.out.println("Query = " + query);
+		ResultSet rs = st.executeQuery(query);
+		List<String> textList = new ArrayList<>();
+		List<String> textList_spe = new ArrayList<>();
+		while (rs.next()) {
+			for (String columnValue : myList) {
+				{
+					columnValue_Output = rs.getString(columnValue).trim();
+					System.out.println(columnValue + " from Database = " + columnValue_Output);
+					{
+						switch (columnValue_Output) {
+						case "AP":
+							columnValue_Output = columnValue_Output.replace("AP", "WHS");
+							break;
+						case "DS":
+							columnValue_Output = columnValue_Output.replace("DS", "DSD");
+							
+							break;
+						}
+						switch (columnValue) {
+
+						case "RMIT_ST":
+						case "RMIT_ZIP5_CD":
+						case "RMIT_ZIP4_CD":
+							textList_spe.add(columnValue_Output);
+							System.out.println("swicth case = " + textList_spe);
+							break;
+						case "OFR_CRE8D_TS":
+						case "DELGTED_TS":
+						case "LST_UPDT_TS":
+							columnValue_Output = abstractTest.formatDateTime(columnValue_Output, "yyyy-MM-dd HH:mm:ss");
+							break;
+						case "OFR_CRE8_UID":
+						case "DELGTED_BY_UID":
+						case "LST_UPDT_UID":
+							columnValue_Output = columnValue_Output.replace("p165114", "p165114 Peters,Carrol");
+						}
+					}
+				}
+				textList.add(columnValue_Output);
+			}
+
+		}
+		st.close();
+		// String finalText = String.join(" - ", textList);
+		System.out.println("Final text = " + textList);
+		String final_Text = String.join(" ", textList);
+		System.out.println("Final text = " + final_Text);
+		return textList;
+
+	}
+	
+	public List<String> db_GetInforFromTwoDynamicTableWithDatetimeFormat(String dateType, String listColumnValue, String schema, String tableName,
+			String tableName1, String onCondition, String columnName, String value) throws Exception, Exception {
+		String columnValue_Output = null;
+		String[] myArray = listColumnValue.split(", ");
+		List<String> myList = new ArrayList<>();
+		for (String str : myArray) {
+			myList.add(str);
+		}
+		Connection connection = connectToDatabase();
+		Statement st = connection.createStatement();
+		String query = formatSQLFromTwoTable(SQL.DYNAMIC_SQL_TWO_TABLES, schema, tableName, tableName1, onCondition, columnName,
+				value);
+		System.out.println("Query = " + query);
+		ResultSet rs = st.executeQuery(query);
+		List<String> textList = new ArrayList<>();
+		List<String> textList_spe = new ArrayList<>();
+		while (rs.next()) {
+			for (String columnValue : myList) {
+				{
+					columnValue_Output = rs.getString(columnValue).trim();
+					System.out.println(columnValue + " from Database = " + columnValue_Output);
+					{
+						switch (columnValue_Output) {
+						case "AP":
+							columnValue_Output = columnValue_Output.replace("AP", "WHS");
+							break;
+						case "DS":
+							columnValue_Output = columnValue_Output.replace("DS", "DSD");
+						case "p165114":
+							columnValue_Output = columnValue_Output.replace("p165114", "p165114 Peters,Carrol");							
+							break;
+						case "cert1":
+							columnValue_Output = columnValue_Output.replace("cert1", "cert1 Robert Alston");							
+							break;
+						}
+						switch (columnValue) {
+
+						case "RMIT_ST":
+						case "RMIT_ZIP5_CD":
+						case "RMIT_ZIP4_CD":
+							textList_spe.add(columnValue_Output);
+							System.out.println("swicth case = " + textList_spe);
+							break;
+						case "OFR_CRE8D_TS":
+						case "DELGTED_TS":
+						case "LST_UPDT_TS":
+							columnValue_Output = abstractTest.formatDateTime(columnValue_Output, dateType);
+							break;
+						/*case "OFR_CRE8_UID":
+						case "DELGTED_BY_UID":
+						case "LST_UPDT_UID":
+							columnValue_Output = columnValue_Output.replace("p165114", "p165114 Peters,Carrol");*/
+						}
+					}
+				}
+				textList.add(columnValue_Output);
+			}
+
+		}
+		st.close();
+		// String finalText = String.join(" - ", textList);
+		System.out.println("Final text = " + textList);
+		String final_Text = String.join(" ", textList);
+		System.out.println("Final text = " + final_Text);
+		return textList;
+
+	}
+
+	/*
+	 * public String getInforFromDatabase(List<String> listColumValue, String
+	 * database) throws Exception, Exception { String columnValue_Output = null;
+	 * Connection connection = connectToDatabase(); Statement st =
+	 * connection.createStatement(); String query =
+	 * formatSQLFromAndWhere(SQL.DYNAMIC_SQL_QUERY, database);
+	 * System.out.println("Query = " + query); ResultSet rs =
+	 * st.executeQuery(query); for(String columnValue:listColumValue) {
+	 * columnValue_Output = rs.getString(columnValue).trim();
+	 * System.out.println(columnValue + " from Database = " + columnValue_Output); }
+	 * 
+	 * st.close(); return columnValue_Output;
+	 * 
+	 * }
+	 */
+
 	public String getInforFromDatabase(String columValue, String database) throws Exception, Exception {
 		String columnValue_Output = null;
 		Connection connection = connectToDatabase();
@@ -258,8 +525,6 @@ public class CommonPagePO extends AbstractPage {
 		return columnValue_Output;
 
 	}
-	
-	
 
 	/*----------------------------OPEN DYNAMIC PAGES----------------------------*/
 	public OfferCreatePO openOfferCreatePage(WebDriver driver) {
@@ -323,13 +588,20 @@ public class CommonPagePO extends AbstractPage {
 		return PageFactoryManager.getCreateLocationGroupPage(driver);
 	}
 	
+	public LGMaintainPO openLocationGroupMaintainPage(WebDriver driver) {
+		clickToElement(driver, CommonPageUI.MENU_DYNAMIC_LINK, "#", "Location Group");
+		clickToElement(driver, CommonPageUI.MENU_DYNAMIC_LINK, "/DCM_UI/location-group-maintain", "Maintain");
+		waitForControlInvisible(driver, CommonPageUI.LOADING_BAR);
+		return PageFactoryManager.getLocationGroupMaintainPage(driver);
+	}
+
 	public CostMaintainPagePO openCostMaintainPage(WebDriver driver) {
 		clickToElement(driver, CommonPageUI.MENU_DYNAMIC_LINK, "#", "Cost");
 		clickToElement(driver, CommonPageUI.MENU_DYNAMIC_LINK, "/DCM_UI/cost-maintenance", "Maintain");
 		waitForControlInvisible(driver, CommonPageUI.LOADING_BAR);
 		return PageFactoryManager.getCostMaintainPage(driver);
 	}
-	
+
 	public DealsMaintainPO openDealMaintainPage(WebDriver driver) {
 		clickToElement(driver, CommonPageUI.MENU_DYNAMIC_LINK, "#", "Deals");
 		clickToElement(driver, CommonPageUI.MENU_DYNAMIC_LINK, "/DCM_UI/deal-maintenance", "Maintain");
