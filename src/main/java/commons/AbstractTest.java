@@ -87,6 +87,13 @@ public class AbstractTest extends AbstractPage{
 				System.out.println(simpleFormat_dt.format(input_dateTime_Parse));
 				System.out.println("SimpleDateFormat =" +simpleFormat_dt);
 				break;
+			case "/yyyy-mm-dd":
+				input_dateTime_Format = new SimpleDateFormat("yyyy-mm-dd");
+				input_dateTime_Parse = input_dateTime_Format.parse(date);
+				simpleFormat_dt = new SimpleDateFormat("mm/dd/yyyy");
+				System.out.println(simpleFormat_dt.format(input_dateTime_Parse));
+				System.out.println("SimpleDateFormat =" +simpleFormat_dt);
+				break;
 				
 			}
 			return simpleFormat_dt.format(input_dateTime_Parse).toString();

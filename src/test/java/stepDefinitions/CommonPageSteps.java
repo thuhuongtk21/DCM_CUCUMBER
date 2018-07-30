@@ -1,5 +1,6 @@
 package stepDefinitions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.WebDriver;
@@ -75,6 +76,11 @@ public class CommonPageSteps extends AbstractPage {
 	public void iClickOnDynamicButton(String value) {
 		commonPage.clickOnDynamicButton(value);
 	}
+	
+	@When("^I click on \"(.*?)\" hyperlink$")
+	public void iClickOnHyperlink(String value) {
+		commonPage.clickOnHyperlink(value);
+	}
 
 	@When("^I click on \"(.*?)\" drop-down list$")
 	public void iClickOnDynamicDropdownList(String value) {
@@ -106,6 +112,23 @@ public class CommonPageSteps extends AbstractPage {
 	public void iPressTabKeyOnDynamicTextbox(String value) {
 		commonPage.pressTabKeyOnDynamicTextbox(value);
 	}
+		
+	
+	@Given("^I verify all \"(.*?)\" on UI with \"(.*?)\" from \"(.*?)\" \"(.*?)\" \"(.*?)\" \"(.*?)\" and verify with \"(.*?)\" from \"(.*?)\" \"(.*?)\" \"(.*?)\"$")
+	public void iGetItemFromAndVerifyWithFrom(String labelName, String columnValue, String schema, String tableName, String columnName, String value, String columnValue1, String tableName1, String columnName1) throws Throwable {
+	    List<String> outPut_List = new ArrayList<String>();
+	    List<String> secondValue_list = new ArrayList<String>();
+	    commonPage.db_GetInforFromOneDynamicTable_oneColumn_listOutPut_2Tables(columnValue, schema, tableName, columnName, value, columnValue1, tableName1, columnName1, outPut_List, secondValue_list);
+	    List<String> actualValue = secondValue_list;
+	    List<String> getFromUi_List = new ArrayList<String>();
+		commonPage.getListLableValueBasedOnDropdownSelected(labelName, columnValue, schema, tableName, columnName, value, getFromUi_List);
+		List<String> expectedValue = getFromUi_List;
+		System.out.println("outPut_List = "+ outPut_List);
+		System.out.println("secondValue_list = "+ secondValue_list);
+		abstractTest.verifyEquals(actualValue, expectedValue);
+	}
+	
+	
 	
 	/*==================VERIFY WITH DATABASE==============*/	
 	
@@ -167,7 +190,8 @@ public class CommonPageSteps extends AbstractPage {
 	
 	
 				/*--------------Label - Get from two Tables------------*/
-	@Then("^I verify \"(.*?)\" label is showing correctly in format \"(.*?)\" with \"(.*?)\" from \"(.*?)\" \"(.*?)\" \"(.*?)\" \"(.*?)\" \"(.*?)\"$")
+	
+	@Then("^I verify \"(.*?)\" label shows correctly in format \"(.*?)\" with \"(.*?)\" from \"(.*?)\" \"(.*?)\" \"(.*?)\" \"(.*?)\" \"(.*?)\" \"(.*?)\"$")
 	public void iVerifyLabelIsShowingCorrectlyWithFrom(String labelName, String format, String listColumnValue, String schema, String tableName, String tableName1, String onCondition, String columnName, String value) throws Throwable {
 		String expectedValue = commonPage.getDynamicValueInDynamicLabel(labelName);	
 		//String actualValue = commonPage.getInforFromTwoDynamicTable(listColumnValue, schema, tableName, tableName1, columnName, value);
@@ -178,7 +202,7 @@ public class CommonPageSteps extends AbstractPage {
 		abstractTest.verifyEquals(actualValue, expectedValue);
 	}
 	
-	@Given("^I verify \"(.*?)\" label and date time is showing correctly in format \"(.*?)\" \"(.*?)\" with \"(.*?)\" from \"(.*?)\" \"(.*?)\" \"(.*?)\" \"(.*?)\" \"(.*?)\"$")
+	@Given("^I verify \"(.*?)\" label and date time shows correctly in format \"(.*?)\" \"(.*?)\" with \"(.*?)\" from \"(.*?)\" \"(.*?)\" \"(.*?)\" \"(.*?)\" \"(.*?)\"$")
 	public void iVerifyLabelAndDateTimeIsShowingCorrectlyInFormatWithFrom(String labelName, String format, String dateType, String listColumnValue, String schema, String tableName, String tableName1, String onCondition, String columnName, String value) throws Throwable {
 		String expectedValue = commonPage.getDynamicValueInDynamicLabel(labelName);	
 		List<String> finalText = commonPage.db_GetInforFromTwoDynamicTableWithDatetimeFormat(dateType, listColumnValue, schema, tableName, tableName1, onCondition, columnName, value);
@@ -190,13 +214,31 @@ public class CommonPageSteps extends AbstractPage {
 			
 	
 		
-	@Then("^I verify \"(.*?)\" date time is showing correctly with format \"(.*?)\" of \"(.*?)\" from \"(.*?)\" \"(.*?)\" \"(.*?)\" \"(.*?)\"$")
-	public void iVerifyDataAtDateTimeIsShowingCorrectlyWithFormatOfFrom(String labelName, String dateType, String columnValue, String schema, String tableName, String columnName, String value) throws Throwable {
+	@Then("^I verify \"(.*?)\" date time label shows correctly with format \"(.*?)\" of \"(.*?)\" from \"(.*?)\" \"(.*?)\" \"(.*?)\" \"(.*?)\"$")
+	public void iVerifyDataAtDateTimeLabelIsShowingCorrectlyWithFormatOfFrom(String labelName, String dateType, String columnValue, String schema, String tableName, String columnName, String value) throws Throwable {
 		String expectedValue = commonPage.getDynamicValueInDynamicLabel(labelName);	
 		String date = commonPage.db_GetInforFromOneDynamicTable_oneColumn(columnValue, schema, tableName, columnName, value);
 		String actualValue = abstractTest.formatDateTime(date, dateType);
 		System.out.println("Expected value = "+expectedValue);
 		System.out.println("Actual value = "+actualValue);
+		abstractTest.verifyEquals(actualValue, expectedValue);
+	}
+	
+	@Then("^I verify \"(.*?)\" date time textbox shows correctly with format \"(.*?)\" of \"(.*?)\" from \"(.*?)\" \"(.*?)\" \"(.*?)\" \"(.*?)\"$")
+	public void iVerifyDataAtDateTimeTextboxIsShowingCorrectlyWithFormatOfFrom(String textboxName, String dateType, String columnValue, String schema, String tableName, String columnName, String value) throws Throwable {
+		String expectedValue = commonPage.getDynamicValueInDynamicTextbox(textboxName, "value");
+		String date = commonPage.db_GetInforFromOneDynamicTable_oneColumn(columnValue, schema, tableName, columnName, value);
+		String actualValue = abstractTest.formatDateTime(date, dateType);
+		System.out.println("Expected value = "+expectedValue);
+		System.out.println("Actual value = "+actualValue);
+		abstractTest.verifyEquals(actualValue, expectedValue);
+	}
+	
+	@Then("^I verify \"(.*?)\" date time textbox shows correctly with \"(.*?)\" from \"(.*?)\" \"(.*?)\" \"(.*?)\" \"(.*?)\"$")
+	public void iVerifyExpectedDataAtDateTimeTextboxWithActualDatafFromDatabase(String textboxName, String columnValue, String schema, String tableName, String columnName, String value) throws Exception  {	  
+		String date = commonPage.getDynamicDateValueTextbox(textboxName, "value");
+		String expectedValue = abstractTest.formatDateTime(date,"mm-dd-yyyy");
+		String actualValue = commonPage.db_GetInforFromOneDynamicTable_oneColumn(columnValue, schema, tableName, columnName, value);
 		abstractTest.verifyEquals(actualValue, expectedValue);
 	}
 	
@@ -245,13 +287,7 @@ public class CommonPageSteps extends AbstractPage {
 		abstractTest.verifyEquals(actualValue, expectedValue);
 	}
 	
-	@Then("^I verify expected data at \"(.*?)\" date time textbox with actual data of \"(.*?)\" from \"(.*?)\" \"(.*?)\" \"(.*?)\" \"(.*?)\"$")
-	public void iVerifyExpectedDataAtDateTimeTextboxWithActualDatafFromDatabase(String textboxName, String columnValue, String schema, String tableName, String columnName, String value) throws Exception  {	  
-		String date = commonPage.getDynamicDateValueTextbox(textboxName, "value");
-		String expectedValue = abstractTest.formatDateTime(date,"mm-dd-yyyy");
-		String actualValue = commonPage.db_GetInforFromOneDynamicTable_oneColumn(columnValue, schema, tableName, columnName, value);
-		abstractTest.verifyEquals(actualValue, expectedValue);
-	}
+	
 	
 	/*@Then("^I verify expected data at \"(.*?)\" textbox with actual data of \"(.*?)\" from \"(.*?)\" \"(.*?)\"$")
 	public void iVerifyExpectedDataAtTextboxWithActualDataOfFrom(String textboxName, String columValue, String database) throws Exception {

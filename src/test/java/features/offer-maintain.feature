@@ -17,7 +17,7 @@ Feature: OFFER SEARCH FUNCTION
     And I verify "commentId" textarea is showing correctly with "PUBLIC_CMT_TXT" from "<Schema>" "<TableName>" "<ColumnName>" "<OfferID>"
     And I verify "HEBCommentId" textarea is showing correctly with "PRIV_HEB_CMT_TXT" from "<Schema>" "<TableName>" "<ColumnName>" "<OfferID>"
     And I verify "offerStatusId" label shows correctly with "OFR_STAT_CD" from "<Schema>" "<TableName>" "<ColumnName>" "<OfferID>"
-    And I verify "statTsStr" date time is showing correctly with format "@ yyyy-MM-dd HH:mm:ss" of "OFR_CRE8D_TS" from "<Schema>" "<TableName>" "<ColumnName>" "<OfferID>"
+    And I verify "statTsStr" date time label shows correctly with format "@ yyyy-MM-dd HH:mm:ss" of "OFR_CRE8D_TS" from "<Schema>" "<TableName>" "<ColumnName>" "<OfferID>"
     And I verify "keyword" textbox shows correctly with "USR_SRCH_TAG_TXT" from "<Schema>" "<TableName>" "<ColumnName>" "<OfferID>"
     And I verify "countingFile" label shows correctly with "NBR_OF_ATTCHS" from "<Schema>" "<TableName>" "<ColumnName>" "<OfferID>"
     And I verify "createdBy" label and date time shows correctly in format " " "yyyy-MM-dd HH:mm:ss" with "<Column_Created By>" from "<Schema>" "<TableName>" "<ColumnName>" "<OfferID>"

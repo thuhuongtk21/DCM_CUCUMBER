@@ -2,4 +2,4 @@
 Feature: Open dynamic page
 
   Scenario: 
-    And I verify "createdBy" label and date time shows correctly in format " " "yyyy-MM-dd HH:mm:ss" with "<Column_Created By>" from "<Schema>" "<TableName>" "<ColumnName>" "<OfferID>"
+  And I verify all "item-type-input" on UI with "DEAL_ENTY_ID" from "<Schema>" "<TableName2>" "<ColumnName>" "<DealID>" and verify with "ITM_KEY_TYP_CD" from "<Schema>" "<TableName3>" "<ColumnName3>"

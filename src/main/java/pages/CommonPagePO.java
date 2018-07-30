@@ -2,7 +2,6 @@ package pages;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +12,6 @@ import org.openqa.selenium.WebDriver;
 import commons.AbstractPage;
 import commons.AbstractTest;
 import interfaces.CommonPageUI;
-import interfaces.CostMaintainPageUI;
-import interfaces.OfferSearchUI;
 import interfaces.SQL;
 
 public class CommonPagePO extends AbstractPage {
@@ -25,7 +22,6 @@ public class CommonPagePO extends AbstractPage {
 		this.driver = driver_;
 		abstractTest = PageFactoryManager.getAbstractTestPage(driver);
 	}
-	
 
 	/*----------------------------TEXT-BOX----------------------------*/
 	public void inputDynamicValueToDynamicTextBox(String textboxName, String value) {
@@ -124,6 +120,13 @@ public class CommonPagePO extends AbstractPage {
 		waitForControlInvisible(driver, CommonPageUI.LOADING_BAR);
 	}
 
+	/*----------------------------HYPERLINK----------------------------*/
+	public void clickOnHyperlink(String value) {
+		waitForControlVisible(driver, CommonPageUI.DYNAMIC_TEXT_LABEL, value);
+		clickToElement(driver, CommonPageUI.DYNAMIC_TEXT_LABEL, value);
+		waitForControlInvisible(driver, CommonPageUI.LOADING_BAR);
+	}
+
 	/*----------------------------CONTEXT MENU----------------------------*/
 
 	public void rightClickOnARecord(String value) {
@@ -141,12 +144,12 @@ public class CommonPagePO extends AbstractPage {
 		waitForControlVisible(driver, CommonPageUI.DYNAMIC_SCREEN_NAME, value);
 		return isControlDisplayed(driver, CommonPageUI.DYNAMIC_SCREEN_NAME, value);
 	}
-	
+
 	/*----------------------------TOOLTIP----------------------------*/
 	public boolean isTooltipShow(String toolTipMessage, String value) {
-		waitForControlVisible(driver, CommonPageUI.DYNAMIC_ICON,value);
+		waitForControlVisible(driver, CommonPageUI.DYNAMIC_ICON, value);
 		hoverMouse(driver, CommonPageUI.DYNAMIC_ICON, value);
-		return isControlDisplayed(driver, CommonPageUI.DYNAMIC_TOOLTIP,toolTipMessage);
+		return isControlDisplayed(driver, CommonPageUI.DYNAMIC_TOOLTIP, toolTipMessage);
 	}
 
 	/*----------------------------GET LIST DATA FROM SEARCH RESULT----------------------------*/
@@ -207,6 +210,24 @@ public class CommonPagePO extends AbstractPage {
 
 		} while (isControlDisplayed(driver, CommonPageUI.ENABLE_NEXT_PAGE));
 	}
+	
+	
+	public void getListLableValueBasedOnDropdownSelected(String labelName, String columnValue, String schema, String tableName, String columnName, String value, List<String> getFromUi_List) throws Exception {
+		waitForControlVisible(driver, CommonPageUI.DYNAMIC_LABEL_INPUT, labelName);
+		List<String> outPut_List = new ArrayList<String>();
+		List<String> UI_List = new ArrayList<String>();
+		db_GetInforFromOneDynamicTable_oneColumn_listOutPut(columnValue, schema, tableName, columnName, value, outPut_List);
+		for(String outPut_eachValue:outPut_List) {
+			clickToElement(driver, CommonPageUI.DROP_DOWN_LIST);
+			clickToElement(driver, CommonPageUI.DYNAMIC_DROP_DOWN_VALUE,outPut_eachValue);
+			waitForControlInvisible(driver, CommonPageUI.LOADING_BAR);
+			String getTextLableOnUI = getTextElement(driver, CommonPageUI.DYNAMIC_LABEL_INPUT, labelName);
+			UI_List.add(getTextLableOnUI);
+		}
+		getFromUi_List.addAll(UI_List);
+		System.out.println("All Item Type = "+getFromUi_List);
+		
+	}
 
 	/*----------------------------PressKey----------------------------*/
 	public void pressEnterKeyOnDynamicTextbox(String value) {
@@ -222,8 +243,8 @@ public class CommonPagePO extends AbstractPage {
 	}
 
 	/*----------------------------Get data from Database----------------------------*/
-	public String db_GetInforFromOneDynamicTable_oneColumn(String columnValue, String schema, String tableName, String columnName,
-			String value) throws Exception, Exception {
+	public String db_GetInforFromOneDynamicTable_oneColumn(String columnValue, String schema, String tableName,
+			String columnName, String value) throws Exception, Exception {
 		String columnValue_Output = null;
 		Connection connection = connectToDatabase();
 		Statement st = connection.createStatement();
@@ -233,13 +254,127 @@ public class CommonPagePO extends AbstractPage {
 		while (rs.next()) {
 			columnValue_Output = rs.getString(columnValue).trim();
 			System.out.println(columnValue + " from Database = " + columnValue_Output);
+			switch (columnValue_Output) {
+			case "0":
+				columnValue_Output = columnValue_Output.replace("0", "");
+				break;
+			case "TPR":
+				columnValue_Output = columnValue_Output.replace("TPR", "Trade Allowance");
+				break;
+
+			}
+			switch(columnName) {
+			case "DEAL_ENTY_ID":
+				String sub_DealEntyId = columnValue_Output.substring(6);
+				String removeZero_DealEntyId = sub_DealEntyId.replaceFirst("^0+(?!$)", "");
+				columnValue_Output = removeZero_DealEntyId;
+				break;
+			}
 		}
 		st.close();
+		System.out.println("Out put = "+ columnValue_Output);
 		return columnValue_Output;
+		
 
 	}
 	
-	public List<String> db_GetInforFromOneDynamicTable_listColumn(String listColumnValue, String schema, String tableName,	String columnName, String value) throws Exception, Exception {
+	public List<String> db_GetInforFromOneDynamicTable_oneColumn_listOutPut(String columnValue, String schema, String tableName,
+			String columnName, String value, List<String> outPut_List ) throws Exception, Exception {
+		String columnValue_Output = null;
+		Connection connection = connectToDatabase();
+		Statement st = connection.createStatement();
+		String query = formatSQL(SQL.SQL_QUERY_FROM_ONE_TABLE, schema, tableName, columnName, value);
+		System.out.println("Query = " + query);
+		ResultSet rs = st.executeQuery(query);
+		while (rs.next()) {
+			columnValue_Output = rs.getString(columnValue).trim();
+			System.out.println(columnValue + " from Database = " + columnValue_Output);
+			switch (columnValue_Output) {
+			case "0":
+				columnValue_Output = columnValue_Output.replace("0", "");
+				break;
+			case "TPR":
+				columnValue_Output = columnValue_Output.replace("TPR", "Trade Allowance");
+				break;
+
+			}
+			switch(columnValue) {
+			case "DEAL_ENTY_ID":
+				String sub_DealEntyId = columnValue_Output.substring(6);
+				System.out.println("sub_DealEntyId = "+ sub_DealEntyId);
+				String removeZero_DealEntyId = sub_DealEntyId.replaceFirst("^0+(?!$)", "");
+				columnValue_Output = removeZero_DealEntyId;				
+				break;
+			
+			}
+			outPut_List.add(columnValue_Output);
+		}		
+		
+		st.close();
+		System.out.println("Out put = "+ outPut_List);
+		
+		
+		return outPut_List;
+		
+
+	}
+	
+	public List<String> db_GetInforFromOneDynamicTable_oneColumn_listOutPut_2Tables(String columnValue, String schema, String tableName,
+			String columnName, String value, String columnValue1, String tableName1, String columnName1, List<String> outPut_List, List<String> secondValue_list ) throws Exception, Exception {
+		String columnValue_Output = null;
+		String columnValue_Output_1 = null;
+		Connection connection = connectToDatabase();
+		Statement st = connection.createStatement();
+		String query = formatSQL(SQL.SQL_QUERY_FROM_ONE_TABLE, schema, tableName, columnName, value);
+		System.out.println("Query = " + query);
+		ResultSet rs = st.executeQuery(query);
+		while (rs.next()) {
+			columnValue_Output = rs.getString(columnValue).trim();
+			System.out.println(columnValue + " from Database = " + columnValue_Output);
+			switch (columnValue_Output) {
+			case "0":
+				columnValue_Output = columnValue_Output.replace("0", "");
+				break;
+			case "TPR":
+				columnValue_Output = columnValue_Output.replace("TPR", "Trade Allowance");
+				break;
+
+			}
+			switch(columnValue) {
+			case "DEAL_ENTY_ID":
+				String sub_DealEntyId = columnValue_Output.substring(6);
+				System.out.println("sub_DealEntyId = "+ sub_DealEntyId);
+				String removeZero_DealEntyId = sub_DealEntyId.replaceFirst("^0+(?!$)", "");
+				columnValue_Output = removeZero_DealEntyId;				
+				break;
+			
+			}
+			outPut_List.add(columnValue_Output);
+		}
+		System.out.println("outPut_List = "+ outPut_List);
+				
+		List<String> second_SQL_list = new ArrayList<String>();
+		for(String outPut_EachValue:outPut_List) {
+			String query1 = formatSQL(SQL.SQL_QUERY_FROM_ONE_TABLE, schema, tableName1, columnName1, outPut_EachValue);
+			ResultSet rs1 = st.executeQuery(query1);
+			while (rs1.next()) {
+				columnValue_Output_1 = rs1.getString(columnValue1).trim();
+				second_SQL_list.add(columnValue_Output_1);
+			}
+			secondValue_list.addAll(second_SQL_list);
+		}
+		
+		st.close();
+		System.out.println("Out put = "+ outPut_List);
+		
+		
+		return secondValue_list;
+		
+
+	}
+
+	public List<String> db_GetInforFromOneDynamicTable_listColumn(String listColumnValue, String schema,
+			String tableName, String columnName, String value) throws Exception, Exception {
 		String columnValue_Output = null;
 		String[] myArray = listColumnValue.split(", ");
 		List<String> myList = new ArrayList<>();
@@ -252,7 +387,7 @@ public class CommonPagePO extends AbstractPage {
 		System.out.println("Query = " + query);
 		ResultSet rs = st.executeQuery(query);
 		List<String> textList = new ArrayList<>();
-		List<String> textList_spe = new ArrayList<>();
+		//List<String> textList_spe = new ArrayList<>();
 		while (rs.next()) {
 			for (String columnValue : myList) {
 				{
@@ -265,7 +400,7 @@ public class CommonPagePO extends AbstractPage {
 							break;
 						case "DS":
 							columnValue_Output = columnValue_Output.replace("DS", "DSD");
-							
+
 							break;
 						}
 						switch (columnValue) {
@@ -273,8 +408,8 @@ public class CommonPagePO extends AbstractPage {
 						case "RMIT_ST":
 						case "RMIT_ZIP5_CD":
 						case "RMIT_ZIP4_CD":
-							textList_spe.add(columnValue_Output);
-							System.out.println("swicth case = " + textList_spe);
+							/*textList_spe.add(columnValue_Output);
+							System.out.println("switch case = " + textList_spe);*/
 							break;
 						case "OFR_CRE8D_TS":
 						case "DELGTED_TS":
@@ -285,6 +420,8 @@ public class CommonPagePO extends AbstractPage {
 						case "DELGTED_BY_UID":
 						case "LST_UPDT_UID":
 							columnValue_Output = columnValue_Output.replace("p165114", "p165114 Peters,Carrol");
+							break;
+						
 						}
 					}
 				}
@@ -300,8 +437,9 @@ public class CommonPagePO extends AbstractPage {
 		return textList;
 
 	}
-	
-	public List<String> db_GetInforFromOneDynamicTable_listColumn_formatTime(String dateType, String listColumnValue, String schema, String tableName,	String columnName, String value) throws Exception, Exception {
+
+	public List<String> db_GetInforFromOneDynamicTable_listColumn_formatTime(String dateType, String listColumnValue,
+			String schema, String tableName, String columnName, String value) throws Exception, Exception {
 		String columnValue_Output = null;
 		String[] myArray = listColumnValue.split(", ");
 		List<String> myList = new ArrayList<>();
@@ -327,7 +465,7 @@ public class CommonPagePO extends AbstractPage {
 							break;
 						case "DS":
 							columnValue_Output = columnValue_Output.replace("DS", "DSD");
-							
+
 							break;
 						}
 						switch (columnValue) {
@@ -362,9 +500,9 @@ public class CommonPagePO extends AbstractPage {
 		return textList;
 
 	}
-	
 
-	public List<String> db_GetInforFromTwoDynamicTable(String listColumnValue, String schema, String tableName,	String tableName1, String onCondition, String columnName, String value) throws Exception, Exception {
+	public List<String> db_GetInforFromTwoDynamicTable(String listColumnValue, String schema, String tableName,
+			String tableName1, String onCondition, String columnName, String value) throws Exception, Exception {
 		String columnValue_Output = null;
 		String[] myArray = listColumnValue.split(", ");
 		List<String> myList = new ArrayList<>();
@@ -373,7 +511,8 @@ public class CommonPagePO extends AbstractPage {
 		}
 		Connection connection = connectToDatabase();
 		Statement st = connection.createStatement();
-		String query = formatSQLFromTwoTable(SQL.DYNAMIC_SQL_TWO_TABLES, schema, tableName, tableName1, onCondition, columnName, value);
+		String query = formatSQLFromTwoTable(SQL.DYNAMIC_SQL_TWO_TABLES, schema, tableName, tableName1, onCondition,
+				columnName, value);
 		System.out.println("Query = " + query);
 		ResultSet rs = st.executeQuery(query);
 		List<String> textList = new ArrayList<>();
@@ -390,7 +529,7 @@ public class CommonPagePO extends AbstractPage {
 							break;
 						case "DS":
 							columnValue_Output = columnValue_Output.replace("DS", "DSD");
-							
+
 							break;
 						}
 						switch (columnValue) {
@@ -425,9 +564,10 @@ public class CommonPagePO extends AbstractPage {
 		return textList;
 
 	}
-	
-	public List<String> db_GetInforFromTwoDynamicTableWithDatetimeFormat(String dateType, String listColumnValue, String schema, String tableName,
-			String tableName1, String onCondition, String columnName, String value) throws Exception, Exception {
+
+	public List<String> db_GetInforFromTwoDynamicTableWithDatetimeFormat(String dateType, String listColumnValue,
+			String schema, String tableName, String tableName1, String onCondition, String columnName, String value)
+			throws Exception, Exception {
 		String columnValue_Output = null;
 		String[] myArray = listColumnValue.split(", ");
 		List<String> myList = new ArrayList<>();
@@ -436,8 +576,8 @@ public class CommonPagePO extends AbstractPage {
 		}
 		Connection connection = connectToDatabase();
 		Statement st = connection.createStatement();
-		String query = formatSQLFromTwoTable(SQL.DYNAMIC_SQL_TWO_TABLES, schema, tableName, tableName1, onCondition, columnName,
-				value);
+		String query = formatSQLFromTwoTable(SQL.DYNAMIC_SQL_TWO_TABLES, schema, tableName, tableName1, onCondition,
+				columnName, value);
 		System.out.println("Query = " + query);
 		ResultSet rs = st.executeQuery(query);
 		List<String> textList = new ArrayList<>();
@@ -455,10 +595,10 @@ public class CommonPagePO extends AbstractPage {
 						case "DS":
 							columnValue_Output = columnValue_Output.replace("DS", "DSD");
 						case "p165114":
-							columnValue_Output = columnValue_Output.replace("p165114", "p165114 Peters,Carrol");							
+							columnValue_Output = columnValue_Output.replace("p165114", "p165114 Peters,Carrol");
 							break;
 						case "cert1":
-							columnValue_Output = columnValue_Output.replace("cert1", "cert1 Robert Alston");							
+							columnValue_Output = columnValue_Output.replace("cert1", "cert1 Robert Alston");
 							break;
 						}
 						switch (columnValue) {
@@ -474,10 +614,11 @@ public class CommonPagePO extends AbstractPage {
 						case "LST_UPDT_TS":
 							columnValue_Output = abstractTest.formatDateTime(columnValue_Output, dateType);
 							break;
-						/*case "OFR_CRE8_UID":
-						case "DELGTED_BY_UID":
-						case "LST_UPDT_UID":
-							columnValue_Output = columnValue_Output.replace("p165114", "p165114 Peters,Carrol");*/
+						/*
+						 * case "OFR_CRE8_UID": case "DELGTED_BY_UID": case "LST_UPDT_UID":
+						 * columnValue_Output = columnValue_Output.replace("p165114",
+						 * "p165114 Peters,Carrol");
+						 */
 						}
 					}
 				}
@@ -587,7 +728,7 @@ public class CommonPagePO extends AbstractPage {
 		waitForControlInvisible(driver, CommonPageUI.LOADING_BAR);
 		return PageFactoryManager.getCreateLocationGroupPage(driver);
 	}
-	
+
 	public LGMaintainPO openLocationGroupMaintainPage(WebDriver driver) {
 		clickToElement(driver, CommonPageUI.MENU_DYNAMIC_LINK, "#", "Location Group");
 		clickToElement(driver, CommonPageUI.MENU_DYNAMIC_LINK, "/DCM_UI/location-group-maintain", "Maintain");
