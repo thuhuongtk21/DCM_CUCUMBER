@@ -39,6 +39,7 @@ public class PageFactoryManager {
 	private static LGCreatePO createLocationGroupPage;
 	private static LGMaintainPO locationGroupMaintainPage;
 	private static CostMaintainPagePO costMaintainPage;
+	private static CostLinkMaintenancePO costLinkMainenancePage;
 	private static CommonPagePO commonPage;
 
 	private static AbstractTest abstractTestPage;
@@ -182,6 +183,13 @@ public class PageFactoryManager {
 			return new CostMaintainPagePO(driver_);
 		}
 		return costMaintainPage;
+	}
+	
+	public static CostLinkMaintenancePO getCostLinkMaintainPage(WebDriver driver_) {
+		if (costMaintainPage == null) {
+			return new CostLinkMaintenancePO(driver_);
+		}
+		return costLinkMainenancePage;
 	}
 
 	public static AbstractTest getAbstractTestPage(WebDriver driver_) {

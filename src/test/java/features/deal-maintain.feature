@@ -39,6 +39,8 @@ Feature: DEAL MAINTAIN FUNCTION
     And I verify "bar-start-dt" date time label shows correctly with format "/yyyy-mm-dd" of "DEAL_EFF_DT" from "<Schema>" "<TableName>" "<ColumnName>" "<DealID>"
     And I verify "bar-end-dt" date time label shows correctly with format "/yyyy-mm-dd" of "DEAL_EXPR_DT" from "<Schema>" "<TableName>" "<ColumnName>" "<DealID>"
     And I verify all "item-type-input" on UI with "DEAL_ENTY_ID" from "<Schema>" "<TableName2>" "<ColumnName>" "<DealID>" and verify with "ITM_KEY_TYP_CD" from "<Schema>" "<TableName3>" "<ColumnName3>"
+    And I verify all "item-desc-input" on UI with "DEAL_ENTY_ID" from "<Schema>" "<TableName2>" "<ColumnName>" "<DealID>" and verify with "ITEM_DES" from "<Schema>" "<TableName3>" "<ColumnName3>"
+    And I verify all "item-pack-input" on UI with "DEAL_ENTY_ID" from "<Schema>" "<TableName2>" "<ColumnName>" "<DealID>" and verify with "HEB_ITM_PK" from "<Schema>" "<TableName3>" "<ColumnName3>"
 
     Examples: 
       | DealID |  | Schema  | TableName       | ColumnName | TableName1  | OnCondition                                             | Column_Vendor                 | Column_DealStatus              | TableName2       | TableName3  | ColumnName3 |

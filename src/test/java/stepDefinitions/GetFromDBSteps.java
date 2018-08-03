@@ -30,11 +30,11 @@ public class GetFromDBSteps {
 	    System.out.println("Final list = "+outPut_List);
 	}
 	
-	@Given("^I get item \"(.*?)\" from \"(.*?)\" \"(.*?)\" \"(.*?)\" \"(.*?)\" and verify with \"(.*?)\" from \"(.*?)\" \"(.*?)\"$")
-	public void iGetItemFromAndVerifyWithFrom(String columnValue, String schema, String tableName, String columnName, String value, String columnValue1, String tableName1, String columnName1) throws Throwable {
+	@Given("^item \"(.*?)\" from \"(.*?)\" \"(.*?)\" \"(.*?)\" \"(.*?)\" and verify with \"(.*?)\" from \"(.*?)\" \"(.*?)\" \"(.*?)\"$")
+	public void iGetItemFromAndVerifyWithFrom(String columnValue, String schema, String tableName, String columnName, String value, String columnValue1, String schema1, String tableName1, String columnName1) throws Throwable {
 	    List<String> outPut_List = new ArrayList<String>();
 	    List<String> secondValue_list = new ArrayList<String>();
-		commonPage.db_GetInforFromOneDynamicTable_oneColumn_listOutPut_2Tables(columnValue, schema, tableName, columnName, value, columnValue1, tableName1, columnName1, outPut_List, secondValue_list);
+		commonPage.db_GetInforFromOneDynamicTable_oneColumn_listOutPut_2Tables(columnValue, schema, tableName, columnName, value, columnValue1, schema1, tableName1, columnName1, outPut_List, secondValue_list);
 		System.out.println("outPut_List = "+ outPut_List);
 		System.out.println("secondValue_list = "+ secondValue_list);
 	}

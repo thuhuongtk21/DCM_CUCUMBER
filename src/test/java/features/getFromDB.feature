@@ -23,7 +23,7 @@ Feature: get from DB
 
   @getFromDB
   Scenario Outline: 
-    And item "DEAL_ENTY_ID" from "<Schema>" "<TableName2>" "<ColumnName>" "<DealID>" and verify with "ITM_KEY_TYP_CD" from "<TableName3>" "<ColumnName3>"
+    And item "DEAL_ENTY_ID" from "<Schema>" "<TableName2>" "<ColumnName>" "<DealID>" and verify with "ITM_KEY_TYP_CD" from "<Schema>" "<TableName3>" "<ColumnName3>"
 
     Examples: 
       | DealID |  | Schema  | TableName       | ColumnName | TableName1  | OnCondition                                             | Column_Vendor                 | Column_DealStatus              | TableName2       | TableName3  | ColumnName3 |

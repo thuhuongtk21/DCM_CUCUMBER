@@ -2,9 +2,7 @@ package commons;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -19,15 +17,6 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import interfaces.CommonPageUI;
-import pages.DealBuilderPagePO;
-import pages.OfferAccpetPO;
-import pages.OfferCreatePO;
-import pages.OfferMaintainPO;
-import pages.OfferReviewPO;
-import pages.OfferSearchPO;
-import pages.PageFactoryManager;
 
 public class AbstractPage {
 
@@ -52,9 +41,7 @@ public class AbstractPage {
 		WebElement element = driver.findElement(By.xpath(locator));
 		element.click();
 	}
-	
-	
-	
+
 	public void moveAndClickToElement(WebDriver driver, String locator) {
 		WebElement element = driver.findElement(By.xpath(locator));
 		Actions action = new Actions(driver);
@@ -115,7 +102,7 @@ public class AbstractPage {
 		return element.getAttribute(attribute);
 
 	}
-	
+
 	public String getAttributeValue(WebDriver driver, String locator, String value, String attribute) {
 		locator = String.format(locator, value);
 		WebElement element = driver.findElement(By.xpath(locator));
@@ -128,7 +115,7 @@ public class AbstractPage {
 		return element.getText();
 
 	}
-	
+
 	public String getTextElement(WebDriver driver, String locator, String value) {
 		locator = String.format(locator, value);
 		WebElement element = driver.findElement(By.xpath(locator));
@@ -141,7 +128,7 @@ public class AbstractPage {
 		return elements.size();
 
 	}
-	
+
 	public int getSizeElement(WebDriver driver, String locator, String value) {
 		locator = String.format(locator, value);
 		List<WebElement> elements = driver.findElements(By.xpath(locator));
@@ -212,7 +199,7 @@ public class AbstractPage {
 		List<WebElement> elementList = driver.findElements(By.xpath(locator));
 		for (WebElement element : elementList) {
 			if (element.getText().contains(value)) {
-				System.out.println("Selected element = " + element.getText());				
+				System.out.println("Selected element = " + element.getText());
 				element.click();
 				System.out.println("Click on element = " + element.getText());
 			}
@@ -231,6 +218,18 @@ public class AbstractPage {
 
 	}
 
+	public List<String> getListElement(WebDriver driver, String locator, List<String> valueList) {
+
+		List<WebElement> elementList = driver.findElements(By.xpath(locator));
+		for (WebElement element : elementList) {
+			String value = element.getText();
+			valueList.add(value);
+		}
+		System.out.println("List value = " + valueList);
+		return valueList;
+
+	}
+
 	public void clickOnPageNumber(WebDriver driver, String locator, int value) {
 		locator = String.format(locator, value);
 		WebElement element = driver.findElement(By.xpath(locator));
@@ -239,9 +238,9 @@ public class AbstractPage {
 
 	public void getListItemOnOnePage(WebDriver driver, String locator, String value, List<String> addToFinalList) {
 		List<String> addSearchResultToList = new ArrayList<String>();
-		
+
 		locator = String.format(locator, value);
-		
+
 		List<WebElement> resultList = driver.findElements(By.xpath(locator));
 		for (WebElement resultItem : resultList) {
 			String getItemOnRow = resultItem.getText();
@@ -249,13 +248,13 @@ public class AbstractPage {
 		}
 		addToFinalList.addAll(addSearchResultToList);
 	}
-	
+
 	public void getListItemOnOnePage_SpecificList(WebDriver driver, String locator, String value) {
 		List<String> addSearchResultToList = new ArrayList<String>();
-		List<String> addToColumnList =  new ArrayList<String>();
-		
+		List<String> addToColumnList = new ArrayList<String>();
+
 		locator = String.format(locator, value);
-		
+
 		List<WebElement> resultList = driver.findElements(By.xpath(locator));
 		for (WebElement resultItem : resultList) {
 			String getItemOnRow = resultItem.getText();
@@ -263,26 +262,22 @@ public class AbstractPage {
 		}
 
 		addToColumnList.addAll(addSearchResultToList);
-		System.out.println("Add to column list = "+ addToColumnList);
-		
-	}
-	
-	/*public void getListItemOnOnePage_Test(WebDriver driver, String locator, int value, List<String> addToFinalList) {
-		List<String> addSearchResultToList = new ArrayList<String>();
-		
-		locator = String.format(locator, value);
-		
-		List<WebElement> resultList = driver.findElements(By.xpath(locator));
-		for (WebElement resultItem : resultList) {
-			String getItemOnRow = resultItem.getText();
-			addSearchResultToList.add(getItemOnRow);
-		}
-		addToFinalList.addAll(addSearchResultToList);
-	}*/
-	
-	
+		System.out.println("Add to column list = " + addToColumnList);
 
-	
+	}
+
+	/*
+	 * public void getListItemOnOnePage_Test(WebDriver driver, String locator, int
+	 * value, List<String> addToFinalList) { List<String> addSearchResultToList =
+	 * new ArrayList<String>();
+	 * 
+	 * locator = String.format(locator, value);
+	 * 
+	 * List<WebElement> resultList = driver.findElements(By.xpath(locator)); for
+	 * (WebElement resultItem : resultList) { String getItemOnRow =
+	 * resultItem.getText(); addSearchResultToList.add(getItemOnRow); }
+	 * addToFinalList.addAll(addSearchResultToList); }
+	 */
 
 	public void acceptAlert(WebDriver driver) {
 		Alert alert = driver.switchTo().alert();
@@ -305,7 +300,7 @@ public class AbstractPage {
 
 	}
 
-	public void switchdToWindowById(WebDriver driver, String parent) {
+	public void switchToWindowById(WebDriver driver, String parent) {
 		Set<String> allWindows = driver.getWindowHandles();
 		for (String runWindow : allWindows) {
 			if (!runWindow.equals(parent)) {
@@ -346,7 +341,7 @@ public class AbstractPage {
 		action.moveToElement(element).perform();
 
 	}
-	
+
 	public void hoverMouse(WebDriver driver, String locator, String value) {
 		locator = String.format(locator, value);
 		WebElement element = driver.findElement(By.xpath(locator));
@@ -363,7 +358,7 @@ public class AbstractPage {
 		action.contextClick(element).perform();
 
 	}
-	
+
 	public void rightClick(WebDriver driver, String locator, String value) {
 		locator = String.format(locator, value);
 		WebElement element = driver.findElement(By.xpath(locator));
@@ -389,7 +384,7 @@ public class AbstractPage {
 		action.sendKeys(element, Keys.ENTER);
 
 	}
-	
+
 	public void dynamicEnterKeyPress(WebDriver driver, String locator, String value) {
 		locator = String.format(locator, value);
 		WebElement element = driver.findElement(By.xpath(locator));
@@ -398,8 +393,8 @@ public class AbstractPage {
 		action.sendKeys(element, Keys.ENTER).perform();
 
 	}
-	
-	public void dynamicTabKeyPress(WebDriver driver, String locator, String value ) {
+
+	public void dynamicTabKeyPress(WebDriver driver, String locator, String value) {
 		locator = String.format(locator, value);
 		WebElement element = driver.findElement(By.xpath(locator));
 
@@ -438,6 +433,11 @@ public class AbstractPage {
 	public Object scrollToBottom(WebDriver driver) {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		return js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
+	}
+
+	public Object scrollToTop(WebDriver driver) {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		return js.executeScript("document.documentElement.scrollTop = 0");
 	}
 
 	public Object srollToElement(WebDriver driver, WebElement element) {
@@ -488,35 +488,31 @@ public class AbstractPage {
 		element.click();
 
 	}
-	
-	/*Connect to DB*/
-	  protected static Connection connectToDatabase() throws ClassNotFoundException, SQLException {
-			Class.forName("com.ibm.db2.jcc.DB2Driver");
-			Connection connection = DriverManager.getConnection("jdbc:db2://RDZUT01.HEB.COM:446/DB2R", "SVCT_DCM",
-					"p9rty28j");
 
-			System.out.println("Connect succesfully");
-			return connection;
-		}
-	
+	/* Connect to DB */
+	protected static Connection connectToDatabase() throws ClassNotFoundException, SQLException {
+		Class.forName("com.ibm.db2.jcc.DB2Driver");
+		Connection connection = DriverManager.getConnection("jdbc:db2://RDZUT01.HEB.COM:446/DB2R", "SVCT_DCM",
+				"p9rty28j");
+
+		System.out.println("Connect succesfully");
+		return connection;
+	}
+
 	public String formatSQL(String query, String schema, String tableName, String columnName, String value) {
-		  query = String.format(query, schema,tableName, columnName, value );
-		  return query;
+		query = String.format(query, schema, tableName, columnName, value);
+		return query;
 	}
-	
-	public String formatSQLFromTwoTable(String query, String schema, String tableName, String tableName1, String onCondition, String columnName, String value) {
-		  query = String.format(query, schema,tableName, schema, tableName1, onCondition, columnName, value );
-		  return query;
+
+	public String formatSQLFromTwoTable(String query, String schema, String tableName, String tableName1,
+			String onCondition, String columnName, String value) {
+		query = String.format(query, schema, tableName, schema, tableName1, onCondition, columnName, value);
+		return query;
 	}
-	
+
 	public String formatSQLFromAndWhere(String query, String database) {
-		  query = String.format(query, database);
-		  return query;
+		query = String.format(query, database);
+		return query;
 	}
-	
-	
-	
-	
-	  
 
 }

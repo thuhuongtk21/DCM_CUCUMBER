@@ -13,8 +13,10 @@ Feature: CREATE LOCATION GROUP FUNCTION
     And I input to "description" text-box with data "<Description>"
     And I input to "publicCmt" text-area with data "<Public Comments>"
     And I input to "privateCmt" text-area with data "<Description>"
-    And I select "<Store ID>" with data "<Store ID>"
+    And I scroll to bottom
+    And I click on "<Store ID>"
     And I click on "arrow-move-right" button
+    And I scroll to top
     And I click on "saveBasket" button
 
     Examples: 

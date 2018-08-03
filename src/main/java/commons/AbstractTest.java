@@ -1,9 +1,8 @@
 package commons;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.text.ParseException;
+
+import java.text.DecimalFormat;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
@@ -97,6 +96,42 @@ public class AbstractTest extends AbstractPage{
 				
 			}
 			return simpleFormat_dt.format(input_dateTime_Parse).toString();
+	  }
+	  
+	  public String formatNumber_AddZeroToDecimal(double number, String formatType) {
+		  String output = null;
+		  switch(formatType){
+		  case "0.0":
+			  DecimalFormat df_1 = new DecimalFormat("#0.0");
+			  output = df_1.format(number);
+			  break;
+		  case "0.00":
+			  DecimalFormat df_2 = new DecimalFormat("#0.00");
+			  output = df_2.format(number);
+			  break;
+		  case "0.000":
+			  DecimalFormat df_3 = new DecimalFormat("#0.00");
+			  output = df_3.format(number);
+			  break;
+		  }
+		  return output;
+		  
+	  }
+	  
+	  public String formatNumber_AddZeroToBeforeInteger(int number, String formatType) {
+		  String output = null;
+		  switch(formatType) {
+		  case "00":
+			  output = String.format("%02d", number);
+			  break;
+		  case "000":
+			  output = String.format("%03d", number);
+			  break;
+		  case "0000":
+			  output = String.format("%04d", number);
+			  break;
+		  }
+		  return output;
 	  }
 	  
 	  protected boolean verifyPassed(boolean condition, boolean flag) {

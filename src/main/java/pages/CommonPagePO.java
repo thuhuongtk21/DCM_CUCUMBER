@@ -12,6 +12,7 @@ import org.openqa.selenium.WebDriver;
 import commons.AbstractPage;
 import commons.AbstractTest;
 import interfaces.CommonPageUI;
+import interfaces.LoginPageUI;
 import interfaces.SQL;
 
 public class CommonPagePO extends AbstractPage {
@@ -21,6 +22,26 @@ public class CommonPagePO extends AbstractPage {
 	public CommonPagePO(WebDriver driver_) {
 		this.driver = driver_;
 		abstractTest = PageFactoryManager.getAbstractTestPage(driver);
+	}
+
+	public void clickToHereLink() {
+		waitForControlVisible(driver, LoginPageUI.HERE_LINK);
+		clickToElement(driver, LoginPageUI.HERE_LINK);
+	}
+
+	public void scrollToBottom() {
+
+		scrollToBottom(driver);
+	}
+
+	public void scrollToTop() {
+
+		scrollToTop(driver);
+	}
+
+	public void clickOnADynamicTextValue(String value) {
+		waitForControlVisible(driver, CommonPageUI.DYNAMIC_LABEL_VALUE, value);
+		clickToElement(driver, CommonPageUI.DYNAMIC_LABEL_VALUE, value);
 	}
 
 	/*----------------------------TEXT-BOX----------------------------*/
@@ -42,8 +63,8 @@ public class CommonPagePO extends AbstractPage {
 
 	/*----------------------------TEXT-AREA----------------------------*/
 	public void inputDynamicValueToDynamicTextarea(String textareaName, String value) {
-		waitForControlVisible(driver, CommonPageUI.DYNAMIC_INPUT_TEXTBOX, textareaName);
-		sendKeyToElement(driver, CommonPageUI.DYNAMIC_INPUT_TEXTBOX, textareaName, value);
+		waitForControlVisible(driver, CommonPageUI.DYNAMIC_INPUT_TEXTAREA, textareaName);
+		sendKeyToElement(driver, CommonPageUI.DYNAMIC_INPUT_TEXTAREA, textareaName, value);
 	}
 
 	public String getDynamicValueInDynamicTextarea(String textareName, String attributeName) {
@@ -76,10 +97,22 @@ public class CommonPagePO extends AbstractPage {
 		getListElementWithTwoDynamicvalue(driver, CommonPageUI.SMART_SEARCH_LIST, value1, value2);
 	}
 
+	/*----------------------------ALL VALUES IN DROP_DOWN LIST----------------------------*/
+	public void getAllValuesInDropdownList() {
+		List<String> valueList = new ArrayList<>();
+		waitForControlVisible(driver, CommonPageUI.SMART_SEARCH_LIST);
+		getListElement(driver, CommonPageUI.SMART_SEARCH_LIST, valueList);
+	}
+
 	/*----------------------------DROP_DOWN----------------------------*/
-	public void clickOnDropdownIcon(String value) {
+	public void clickOnDropdownIcon_Button(String value) {
 		// waitForControlVisible(driver, CommonPageUI.DYNAMIC_DROP_DOWN_CLICK, value);
 		clickToElement(driver, CommonPageUI.DYNAMIC_DROP_DOWN_CLICK, value);
+	}
+
+	public void clickOnDropdownIcon_SmartSearch(String value) {
+		// waitForControlVisible(driver, CommonPageUI.DYNAMIC_DROP_DOWN_CLICK, value);
+		clickToElement(driver, CommonPageUI.DYNAMIC_DROP_DOWN_ICON_SMART_SEARCH, value);
 	}
 
 	public void clickOnDropdownList() {
@@ -210,23 +243,24 @@ public class CommonPagePO extends AbstractPage {
 
 		} while (isControlDisplayed(driver, CommonPageUI.ENABLE_NEXT_PAGE));
 	}
-	
-	
-	public void getListLableValueBasedOnDropdownSelected(String labelName, String columnValue, String schema, String tableName, String columnName, String value, List<String> getFromUi_List) throws Exception {
+
+	public void getListLableValueBasedOnDropdownSelected(String labelName, String columnValue, String schema,
+			String tableName, String columnName, String value, List<String> getFromUi_List) throws Exception {
 		waitForControlVisible(driver, CommonPageUI.DYNAMIC_LABEL_INPUT, labelName);
 		List<String> outPut_List = new ArrayList<String>();
 		List<String> UI_List = new ArrayList<String>();
-		db_GetInforFromOneDynamicTable_oneColumn_listOutPut(columnValue, schema, tableName, columnName, value, outPut_List);
-		for(String outPut_eachValue:outPut_List) {
+		db_GetInforFromOneDynamicTable_oneColumn_listOutPut(columnValue, schema, tableName, columnName, value,
+				outPut_List);
+		for (String outPut_eachValue : outPut_List) {
 			clickToElement(driver, CommonPageUI.DROP_DOWN_LIST);
-			clickToElement(driver, CommonPageUI.DYNAMIC_DROP_DOWN_VALUE,outPut_eachValue);
+			clickToElement(driver, CommonPageUI.DYNAMIC_DROP_DOWN_VALUE, outPut_eachValue);
 			waitForControlInvisible(driver, CommonPageUI.LOADING_BAR);
 			String getTextLableOnUI = getTextElement(driver, CommonPageUI.DYNAMIC_LABEL_INPUT, labelName);
 			UI_List.add(getTextLableOnUI);
 		}
 		getFromUi_List.addAll(UI_List);
-		System.out.println("All Item Type = "+getFromUi_List);
-		
+		System.out.println("All Item Type = " + getFromUi_List);
+
 	}
 
 	/*----------------------------PressKey----------------------------*/
@@ -263,7 +297,7 @@ public class CommonPagePO extends AbstractPage {
 				break;
 
 			}
-			switch(columnName) {
+			switch (columnName) {
 			case "DEAL_ENTY_ID":
 				String sub_DealEntyId = columnValue_Output.substring(6);
 				String removeZero_DealEntyId = sub_DealEntyId.replaceFirst("^0+(?!$)", "");
@@ -272,14 +306,13 @@ public class CommonPagePO extends AbstractPage {
 			}
 		}
 		st.close();
-		System.out.println("Out put = "+ columnValue_Output);
+		System.out.println("Out put = " + columnValue_Output);
 		return columnValue_Output;
-		
 
 	}
-	
-	public List<String> db_GetInforFromOneDynamicTable_oneColumn_listOutPut(String columnValue, String schema, String tableName,
-			String columnName, String value, List<String> outPut_List ) throws Exception, Exception {
+
+	public List<String> db_GetInforFromOneDynamicTable_oneColumn_listOutPut(String columnValue, String schema,
+			String tableName, String columnName, String value, List<String> outPut_List) throws Exception, Exception {
 		String columnValue_Output = null;
 		Connection connection = connectToDatabase();
 		Statement st = connection.createStatement();
@@ -298,29 +331,28 @@ public class CommonPagePO extends AbstractPage {
 				break;
 
 			}
-			switch(columnValue) {
+			switch (columnValue) {
 			case "DEAL_ENTY_ID":
 				String sub_DealEntyId = columnValue_Output.substring(6);
-				System.out.println("sub_DealEntyId = "+ sub_DealEntyId);
+				System.out.println("sub_DealEntyId = " + sub_DealEntyId);
 				String removeZero_DealEntyId = sub_DealEntyId.replaceFirst("^0+(?!$)", "");
-				columnValue_Output = removeZero_DealEntyId;				
+				columnValue_Output = removeZero_DealEntyId;
 				break;
-			
+
 			}
 			outPut_List.add(columnValue_Output);
-		}		
-		
+		}
+
 		st.close();
-		System.out.println("Out put = "+ outPut_List);
-		
-		
+		System.out.println("Out put = " + outPut_List);
+
 		return outPut_List;
-		
 
 	}
-	
-	public List<String> db_GetInforFromOneDynamicTable_oneColumn_listOutPut_2Tables(String columnValue, String schema, String tableName,
-			String columnName, String value, String columnValue1, String tableName1, String columnName1, List<String> outPut_List, List<String> secondValue_list ) throws Exception, Exception {
+
+	public List<String> db_GetInforFromOneDynamicTable_oneColumn_listOutPut_2Tables(String columnValue, String schema,
+			String tableName, String columnName, String value, String columnValue1, String schema1, String tableName1,
+			String columnName1, List<String> outPut_List, List<String> secondValue_list) throws Exception, Exception {
 		String columnValue_Output = null;
 		String columnValue_Output_1 = null;
 		Connection connection = connectToDatabase();
@@ -340,36 +372,36 @@ public class CommonPagePO extends AbstractPage {
 				break;
 
 			}
-			switch(columnValue) {
+			switch (columnValue) {
 			case "DEAL_ENTY_ID":
 				String sub_DealEntyId = columnValue_Output.substring(6);
-				System.out.println("sub_DealEntyId = "+ sub_DealEntyId);
+				System.out.println("sub_DealEntyId = " + sub_DealEntyId);
 				String removeZero_DealEntyId = sub_DealEntyId.replaceFirst("^0+(?!$)", "");
-				columnValue_Output = removeZero_DealEntyId;				
+				columnValue_Output = removeZero_DealEntyId;
 				break;
-			
+
 			}
 			outPut_List.add(columnValue_Output);
 		}
-		System.out.println("outPut_List = "+ outPut_List);
-				
-		List<String> second_SQL_list = new ArrayList<String>();
-		for(String outPut_EachValue:outPut_List) {
+		System.out.println("outPut_List = " + outPut_List);
+
+		for (String outPut_EachValue : outPut_List) {
 			String query1 = formatSQL(SQL.SQL_QUERY_FROM_ONE_TABLE, schema, tableName1, columnName1, outPut_EachValue);
 			ResultSet rs1 = st.executeQuery(query1);
+			List<String> second_SQL_list = new ArrayList<String>();
 			while (rs1.next()) {
 				columnValue_Output_1 = rs1.getString(columnValue1).trim();
 				second_SQL_list.add(columnValue_Output_1);
+				System.out.println("second_SQL_list = " + second_SQL_list);
 			}
 			secondValue_list.addAll(second_SQL_list);
+			System.out.println("secondValue_list from SQL = " + secondValue_list);
 		}
-		
+
 		st.close();
-		System.out.println("Out put = "+ outPut_List);
-		
-		
+		System.out.println("Out put = " + outPut_List);
+
 		return secondValue_list;
-		
 
 	}
 
@@ -387,7 +419,7 @@ public class CommonPagePO extends AbstractPage {
 		System.out.println("Query = " + query);
 		ResultSet rs = st.executeQuery(query);
 		List<String> textList = new ArrayList<>();
-		//List<String> textList_spe = new ArrayList<>();
+		// List<String> textList_spe = new ArrayList<>();
 		while (rs.next()) {
 			for (String columnValue : myList) {
 				{
@@ -408,8 +440,10 @@ public class CommonPagePO extends AbstractPage {
 						case "RMIT_ST":
 						case "RMIT_ZIP5_CD":
 						case "RMIT_ZIP4_CD":
-							/*textList_spe.add(columnValue_Output);
-							System.out.println("switch case = " + textList_spe);*/
+							/*
+							 * textList_spe.add(columnValue_Output); System.out.println("switch case = " +
+							 * textList_spe);
+							 */
 							break;
 						case "OFR_CRE8D_TS":
 						case "DELGTED_TS":
@@ -421,7 +455,7 @@ public class CommonPagePO extends AbstractPage {
 						case "LST_UPDT_UID":
 							columnValue_Output = columnValue_Output.replace("p165114", "p165114 Peters,Carrol");
 							break;
-						
+
 						}
 					}
 				}
@@ -748,6 +782,14 @@ public class CommonPagePO extends AbstractPage {
 		clickToElement(driver, CommonPageUI.MENU_DYNAMIC_LINK, "/DCM_UI/deal-maintenance", "Maintain");
 		waitForControlInvisible(driver, CommonPageUI.LOADING_BAR);
 		return PageFactoryManager.getDealsMaintainPage(driver);
+	}
+
+	public CostLinkMaintenancePO openCostLinkMaintainPage(WebDriver driver) {
+		clickToElement(driver, CommonPageUI.MENU_DYNAMIC_LINK, "#", "Deals");
+		clickToElement(driver, CommonPageUI.MENU_DYNAMIC_LINK, "/DCM_UI/cost-link-maintenance",
+				"Cost Link Maintenance");
+		waitForControlInvisible(driver, CommonPageUI.LOADING_BAR);
+		return PageFactoryManager.getCostLinkMaintainPage(driver);
 	}
 
 }
